@@ -1,23 +1,16 @@
 $(document).ready(function() {
 	d3.csv('data/sensorData.csv',function(error, allData){
-		var xScale, yScale, currentData, sensors, altitudes;
+		var xScale, yScale, currentData, sensors, altitudes, summaryMonths;
 		currentData = allData;
 		
+		var CurrSensor = 'Blewett Pass'
+
 		var margin = {
 			left:80,
 			bottom:80,
 			top:50,
 			right:50
 		}
-
-		d3.csv('data/AbbrevAndAltitude.csv', function(data){
-			data.forEach(function(d) {
-				d.Altitude = +d.Altitude
-				d.FName = d.FullName
-				d.SheetName = d.SheetName
-			});
-			console.log(data[0])
-		});
 
 		var svg = d3.select('#vis')
 					.append('svg')
@@ -107,6 +100,30 @@ $(document).ready(function() {
 				.attr('height', function(d) {return height-yScale(d[yval])})
 				.attr('width', xScale.rangeBand());
 		}
+
+	d3.csv('data/AbbrevAndAltitude.csv', function(data){
+			data.forEach(function(d) {
+				d.Altitude = +d.Altitude
+				d.FName = d.FullName
+				d.SnowWaterEquiv = +d.SnowWaterEquiv
+				d.PrecipitationAccum = +d.PrecipitationAcum
+			});
+			return data
+	});
+
+	d3.csv('data/MonthlyAverages.csv', function(data){
+			data.forEach(function(d) {
+				d.Altitude = +d.Altitude
+				d.SensorName = d.SensorName
+				d.SnowWaterEquiv = +d.SnowWaterEquiv
+				d.PrecipitationAccum = +d.PrecipitationAcum
+			});
+			currentData = data.filter(function(d){
+				return d.SensorName == CurrSensor
+			})
+			
+			draw(currentData, 'Month', 'Snow Water Equivalent (in)')
+		});
 	});
 
 
