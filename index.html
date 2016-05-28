@@ -12,41 +12,46 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    
+    <script src="./js/jquery-1.12.4.js"></script>
+    <script src="./js/jquery-ui.js"></script>
+    <script src="./js/angular.js"></script>
+    <script src="./js/slider.js"></script>
+    <link rel="stylesheet" href="./css/jquery-ui.css">
     <script type="text/javascript" src="js/main.js"></script>
   </head>
   <body>
-    <div class="container">
-    <h1>INFO 474 Data Exploration Tool</h1>
+    <div class="container text-center">
+    <h1><b>INFO 474 Data Exploration Tool<b></h1><br>
     
     <p>
         <label for="amount1">Year:</label>
-        <input type="text" id="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        <input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        <div id="slider"></div>
     </p>
     
     <div id="year"></div>
     
     <p>
         <label for="amount2">Month:</label>
-        <input type="text" id="amount2" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        <input type="text" class="amount2" readonly style="border:0; color:#f6931f; font-weight:bold;">
     </p>
         
     <div id="month"></div> 
     
     <p>
         <label for="amount3">Day:</label>
-        <input type="text" id="amount3" readonly style="border:0; color:#f6931f; font-weight:bold;">
+        <input type="text" class="amount3" readonly style="border:0; color:#f6931f; font-weight:bold;">
     </p>
        
     <div id="day"></div>    
 
 
+    <br>
     <div id='button'>
       <div class="btn-group" id="list1" data-toggle="buttons">
         <label class="btn btn-primary active">
-        <input value="Year" class="school" name="school" type="radio" autocomplete="off" checked>Year
+        <input value="Year" class="school" name="school" type="radio" ng-model="year" autocomplete="off" checked>Year
         </label>
         <label class="btn btn-primary">
         <input value="Month" class="school" name="school" type="radio" autocomplete="off">Month
@@ -67,6 +72,7 @@
         </label>
       </div>
     </div>
+    <br>
     <section id="sandbox">
       <div class="container" id="vis">
       </div>
@@ -83,6 +89,28 @@
     
     
     
+
+    <div class="display col-md-3">
+                <h4>Overall Data for Range</h4>
+                Precipitation (Year): <br>
+                Temperature (Year): <br>
+                Yearly Average: <br>
+                Yearly Average 2015: <br>
+    </div>
+    
+    <div class="col-md-4 col-md-offset-1">
+        <h2>Range</h2>
+        <input type="text" class="amount1 text-center" readonly style="border:0;"><br>
+        <input type="text" class="amount2 text-center" readonly style="border:0;"><br>
+        <input type="text" class="amount3 text-center" readonly style="border:0;"><br>
+    </div>
+    
+    <div class="display col-md-3 col-md-offset-1">
+        <h4>Specific Sensor Data for <br><span id="sensor">North Cascades Sensor #3410</span> </h4>
+    </div>
+    
+
+    
     <script>
         $(function() {
             $( "#year" ).slider({
@@ -91,27 +119,60 @@
             max: 2015,
             values: [ 2002, 2010 ],
             slide: function( event, ui ) {
-                $( "#amount1" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $( ".amount1" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
             }
             });
-            $( "#amount1" ).val($( "#year" ).slider( "values", 0 ) +
+            $( ".amount1" ).val($( "#year" ).slider( "values", 0 ) +
             " - " + $( "#year" ).slider( "values", 1 ) );
         });
         
         $(function() {
+            var monthNames = ["January", "February", "March", "April", "May", "June",
+                                "July", "August", "September", "October", "November", "December"
+                             ];
+                             
+            
+            /*********SLIDER Convert Integers to Month names */
+            getMonthName = function (v) {
+                var n = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                return n[v]
+            }
+            
+            var d = new Date();
+            
+            var print = function (val) {
+                document.body.innerHTML = document.body.innerHTML + "<br />" + val
+            }
+            
+            /***********************************/
+            
             $( "#month" ).slider({
             range: true,
             min: 1,
             max: 12,
             values: [ 3, 6 ],
             slide: function( event, ui ) {
-                $( "#amount2" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                
+                $( ".amount2" ).val(  getMonthName(ui.values[ 0 ] - 1) + " - " + getMonthName(ui.values[ 1 ] - 1) );
+
             }
             });
-            $( "#amount2" ).val($( "#month" ).slider( "values", 0 ) +
-            " - " + $( "#month" ).slider( "values", 1 ) );
-        });
-        
+            
+            var month1Val = $( "#month" ).slider( "values", 0 );
+            var month1Display = getMonthName(month1Val - 1);
+            var month2Val = $( "#month" ).slider( "values", 1 );
+            var month2Display = getMonthName(month2Val - 1);
+            
+            
+            $( ".amount2" ).val(
+                month1Display + " - " + month2Display 
+            );
+
+
+
+            });
+
+            
         $(function() {
             $( "#day" ).slider({
             range: true,
@@ -119,10 +180,10 @@
             max: 31,
             values: [ 3, 12 ],
             slide: function( event, ui ) {
-                $( "#amount3" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                $( ".amount3" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
             }
             });
-            $( "#amount3" ).val($( "#day" ).slider( "values", 0 ) +
+            $( ".amount3" ).val($( "#day" ).slider( "values", 0 ) +
             " - " + $( "#day" ).slider( "values", 1 ) );
         });
         

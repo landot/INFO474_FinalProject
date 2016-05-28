@@ -1,4 +1,7 @@
+
+
 $(document).ready(function() {
+	
 	d3.csv('data/sensorData.csv',function(error, allData){
 		var xScale, yScale, currentData, sensors, altitudes, summaryMonths;
 		currentData = allData;
@@ -77,6 +80,9 @@ $(document).ready(function() {
 			xScale = setScales(data, 'cat', xval, 0)
 			yScale = setScales(data, 'reg', yval, 0)
 
+			// Set up user input
+			setSliders();
+			
 			// Set axes
 			setAxes(xScale,yScale)
 

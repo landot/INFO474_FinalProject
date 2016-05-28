@@ -11,3 +11,28 @@
 #playpause {
     margin-top: 10px;
 }
+
+#vis {
+    border-radius: 5px;
+    border: 2px solid #313532;
+}
+
+.display {
+    padding:15px;
+    border-radius: 5px;
+    border: 2px solid #313532;
+}
+
+body {
+    background-color: #EDFDF0;
+}
+
+.amount1, .amount2, .amount3 {
+    background-color: #EDFDF0; 
+}
+
+#sensor {
+    font-size: 14px;
+    color:#f6931f;
+    font-weight: bold;
+}
