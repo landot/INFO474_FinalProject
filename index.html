@@ -5,13 +5,17 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>INFO 474 Data Exploration Tool By Tim Landowski</title>
+    <title>INFO 474 Final Project</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+    
+    <!--leaflet references-->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     
     <script src="./js/jquery-1.12.4.js"></script>
     <script src="./js/jquery-ui.js"></script>
@@ -22,7 +26,7 @@
   </head>
   <body>
     <div class="container text-center">
-    <h1><b>INFO 474 Data Exploration Tool<b></h1><br>
+    <h1><b>INFO 474 Final Project<b></h1><br>
     
     <p>
         <label for="amount1">Year:</label>
@@ -76,6 +80,7 @@
     <section id="sandbox">
       <div class="container" id="vis">
       </div>
+      <div class="container2" id="container2" style="width:900px; height:600px;">
     </section>
     
     <div id='playpause'>
