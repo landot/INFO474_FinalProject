@@ -36,3 +36,12 @@ body {
     color:#f6931f;
     font-weight: bold;
 }
+
+#container2 {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 60px;
+}
+

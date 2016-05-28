@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>INFO 474 Final Project</title>
+
+
+    <title>INFO 474 Washington Weather Report</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
     <link href="css/main.css" rel="stylesheet" />
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js"></script>
@@ -22,11 +24,22 @@
     <script src="./js/angular.js"></script>
     <script src="./js/slider.js"></script>
     <link rel="stylesheet" href="./css/jquery-ui.css">
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/map.js"></script>
   </head>
   <body>
-    <div class="container text-center">
+    <!--<div class="container text-center">-->
+      
     <h1><b>INFO 474 Final Project<b></h1><br>
+    <!--<div class="container">-->
     
     <p>
         <label for="amount1">Year:</label>
@@ -81,6 +94,7 @@
       <div class="container" id="vis">
       </div>
       <div class="container2" id="container2" style="width:900px; height:600px;">
+
     </section>
     
     <div id='playpause'>
@@ -198,6 +212,8 @@
         
   </script>
   
+      <div class="container2" id="container2" style="width:900px; height:600px;" style="text-align:center">
+      </div>
     
   </body>
 </html>

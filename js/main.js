@@ -2,7 +2,7 @@
 
 $(document).ready(function() {
 	
-	d3.csv('data/sensorData.csv',function(error, allData){
+	d3.csv('data/MonthlyAverages.csv',function(error, allData){
 		var xScale, yScale, currentData, sensors, altitudes, summaryMonths;
 		currentData = allData;
 		
