@@ -76,7 +76,7 @@
 
     <br>
     <div id='button'>
-      <div class="btn-group" id="list1" data-toggle="buttons">
+      <div class="btn-group" id="list1">
         <label class="btn btn-primary active">
         <input value="Year" class="school" name="school" type="radio" ng-model="year" autocomplete="off" checked>Year
         </label>
@@ -87,15 +87,15 @@
         <input value="Day" class="school" name="school" type="radio" autocomplete="off">Day
         </label>
       </div>
-      <div class="btn-group" id="list2" data-toggle="buttons">
+      <div class="btn-group" id="list2">
         <label class="btn btn-primary active">
-        <input class='year' value="Sal2011" name="year" type="radio" autocomplete="off" checked>Both
+        <input class='year' value="Both" name="year" type="radio" autocomplete="off" checked>Both
         </label>
         <label class="btn btn-primary">
-        <input class='year' value="Sal2012" name="year" type="radio" autocomplete="off">Temperature
+        <input class='year' value="Temperature" name="year" type="radio" autocomplete="off">Temperature
         </label>
         <label class="btn btn-primary">
-        <input class='year' value="Sal2013" name="year" type="radio" autocomplete="off">Precipitation
+        <input class='year' value="Precipitation" name="year" type="radio" autocomplete="off">Precipitation
         </label>
       </div>
     </div>
@@ -141,7 +141,7 @@
     
 
     
-    <script>
+        <script>
         $(function() {
             $( "#year" ).slider({
             range: true,
@@ -150,17 +150,16 @@
             values: [ 2002, 2010 ],
             slide: function( event, ui ) {
                 $( ".amount1" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+            },
+            change: function(event, ui) {
+                redraw($("#year").slider("values", 0), $("#year").slider("values", 1));
             }
             });
             $( ".amount1" ).val($( "#year" ).slider( "values", 0 ) +
             " - " + $( "#year" ).slider( "values", 1 ) );
         });
         
-        $(function() {
-            var monthNames = ["January", "February", "March", "April", "May", "June",
-                                "July", "August", "September", "October", "November", "December"
-                             ];
-                             
+        $(function() {                
             
             /*********SLIDER Convert Integers to Month names */
             getMonthName = function (v) {
@@ -173,7 +172,6 @@
             var print = function (val) {
                 document.body.innerHTML = document.body.innerHTML + "<br />" + val
             }
-            
             /***********************************/
             
             $( "#month" ).slider({
@@ -185,6 +183,9 @@
                 
                 $( ".amount2" ).val(  getMonthName(ui.values[ 0 ] - 1) + " - " + getMonthName(ui.values[ 1 ] - 1) );
 
+            },
+            change: function(event, ui) {
+                redraw($("#month").slider("values", 0), $("#month").slider("values", 1));
             }
             });
             
@@ -211,11 +212,22 @@
             values: [ 3, 12 ],
             slide: function( event, ui ) {
                 $( ".amount3" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+            },
+            change: function(event, ui) {
+                redraw($("#day").slider("values", 0), $("#day").slider("values", 1));
             }
             });
             $( ".amount3" ).val($( "#day" ).slider( "values", 0 ) +
             " - " + $( "#day" ).slider( "values", 1 ) );
         });
+        
+        var redraw = function(value1, value2) {
+            //
+            console.log($('input[name=school]:checked').val());
+            console.log($('input[name=year]:checked').val());
+            console.log(value1);
+            console.log(value2);
+        }
         
   </script>
   
