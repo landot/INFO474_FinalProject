@@ -3,16 +3,55 @@ $(function() {
     //console.log('test')
     var map = L.map('container2')
         .setView([47.27, -121.34], 7)
+        //._layersMaxZoom=8
+        //.options.maxZoom = 8;
+    
+    
+    
+    
+    // function onEachFeature(feature, layer) {
+    //     layer.on({
+    //         mouseover: highlightFeature,
+    //         mouseout: resetHighlight,
+    //         click: zoomToFeature
+    //     });
+    // }
 
+    // geojson = L.geoJson(latlng, {
+    //     style: style,
+    //     onEachFeature: onEachFeature
+    // }).addTo(map);
+    
+    
+    // //hover over
+    // function highlightFeature(e) {
+    //     var layer = e.name;
+
+    //     layer.setStyle({
+    //         weight: 5,
+    //         color: '#666',
+    //         dashArray: '',
+    //         fillOpacity: 0.7
+    //     });
+
+    //     if (!L.Browser.ie && !L.Browser.opera) {
+    //         layer.bringToFront();
+    //     }
+    // }
+    
+    // //zoom to click
+    // function zoomToFeature(e) {
+    //     map.fitBounds(e.name.getBounds());
+    // }
+    
     // Create an OpenStreetMap tile layer variable using their url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png'
-    var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png')
+    var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',{ minZoom: 7, maxZoom: 13})
     
     // Add the layer to your map
     layer.addTo(map)
 
     /* Initialize the SVG layer */
-    map._initPathRoot()
-
+    
     /* We simply pick up the SVG from the map object */
     var svg = d3.select("#map").select("svg"),
         g = svg.append("g");
@@ -578,8 +617,13 @@ $(function() {
         //console.log(avgData)
         
         latlng.map(function(d) {
-          console.log(d.name)
-          var circle = new L.marker([d.Latitude, d.Longitude], 200, {color:'blue', opacity:.5}).addTo(map);
+          //console.log(d.name)
+          //var marker = new L.marker([d.Latitude, d.Longitude], 1, {color:'blue', opacity:.5});
+          //marker.iconSize = [1000, 1000];
+          //marker.addTo(map);
+          
+          
+          var circle = new L.circle([d.Latitude, d.Longitude], 10000, {color:getColor(Math.random()), opacity:.7}).addTo(map);
           
           /*
           var name = d.name          
@@ -604,6 +648,38 @@ $(function() {
     
     });
     
+    var legend = L.control({position: 'bottomright'});
+
+    legend.onAdd = function (map) {
+
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [0.2, 0.4, 0.6, 0.8, 1.0],
+            labels = [];
+
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+        }
+
+        return div;
+    };
+
+    legend.addTo(map);
+    
+    
+    
+    function getColor(d) {
+        return  d > 1.000 ? 'blue' :
+                d > .800  ? 'blue' :
+                d > .600  ? 'tan' :
+                d > .400  ? 'yellow' :
+                d > .20   ? 'orange' :
+                d > .10   ? 'red' :
+                d > .010   ? 'black' :
+                           '#FFEDA0';
+    }
     
     
 
