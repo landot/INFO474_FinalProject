@@ -12,40 +12,40 @@ $(function() {
     
     //console.log(statesData);
     
-    function onEachFeature(feature, layer) {
-        layer.on({
-            mouseover: highlightFeature,
-            mouseout: resetHighlight,
-            click: zoomToFeature
-        });
-    }
+    // function onEachFeature(feature, layer) {
+    //     layer.on({
+    //         mouseover: highlightFeature,
+    //         mouseout: resetHighlight,
+    //         click: zoomToFeature
+    //     });
+    // }
 
-    geojson = L.geoJson(latlng, {
-        style: getColor,
-        onEachFeature: onEachFeature
-    }).addTo(map);
+    // geojson = L.geoJson(latlng, {
+    //     style: getColor,
+    //     onEachFeature: onEachFeature
+    // }).addTo(map);
     
     
-    //hover over
-    function highlightFeature(e) {
-        var layer = e.name;
+    // //hover over
+    // function highlightFeature(e) {
+    //     var layer = e.name;
 
-        layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
+    //     layer.setStyle({
+    //         weight: 5,
+    //         color: '#666',
+    //         dashArray: '',
+    //         fillOpacity: 0.7
+    //     });
 
-        if (!L.Browser.ie && !L.Browser.opera) {
-            layer.bringToFront();
-        }
-    }
+    //     if (!L.Browser.ie && !L.Browser.opera) {
+    //         layer.bringToFront();
+    //     }
+    // }
     
-    //zoom to click
-    function zoomToFeature(e) {
-        map.fitBounds(e.name.getBounds());
-    }
+    // //zoom to click
+    // function zoomToFeature(e) {
+    //     map.fitBounds(e.name.getBounds());
+    // }
     
     function stateStyle(feature) {
         return {
@@ -56,6 +56,9 @@ $(function() {
             fillOpacity: 0.1
         };
     }
+    
+   
+    
     
     // Create layers for plotting points and adding state lines
     var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',{ minZoom: 7, maxZoom: 13}).addTo(map);
@@ -74,7 +77,11 @@ $(function() {
           //var marker = new L.marker([d.Latitude, d.Longitude], 1, {color:'blue', opacity:.5});
           //marker.addTo(map);
           
-          var circle = new L.circle([d.Latitude, d.Longitude], 10000, {color:getColor(Math.random()), opacity:.7}, function(){console.log(d.name)}).addTo(map);
+          var circle = new L.CircleMarker([d.Latitude, d.Longitude], 10000).addTo(map)
+              .setStyle({fillColor: getColor(Math.random())})
+              .setStyle({opacity: .5})
+              .setStyle({fillOpacity: .8})
+              .setStyle({color: 'white'});
           
           //changes station when clicked
           circle.on('click', function() {
@@ -117,13 +124,11 @@ $(function() {
     
     //number distribution for heatmap
     function getColor(d) {
-        return  d > 1.000 ? 'blue' :
-                d > .800  ? 'blue' :
-                d > .600  ? 'tan' :
+        return  d > .800  ? 'blue' :
+                d > .600  ? 'lightblue' :
                 d > .400  ? 'yellow' :
                 d > .20   ? 'orange' :
                 d > .10   ? 'red' :
-                d > .010   ? 'black' :
-                           '#FFEDA0';
+                            'red';
     }
 });
