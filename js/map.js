@@ -1,3 +1,9 @@
+//reference for scaling circles https://www.mapbox.com/mapbox.js/example/v1.0.0/scaled-markers/
+//references for info box http://leafletjs.com/examples/choropleth.html
+
+
+
+
 $(function() {
     // Create a new leaflet map in the "container2" div
     //console.log('test')
