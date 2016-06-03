@@ -1,18 +1,18 @@
 
-/*
+
 $(document).ready(function() {
 	
-	d3.csv('data/CleanedSensorData.csv',function(error, allData){
+	d3.csv('data/WeeklyAveragesBySensor.csv',function(error, allData){
 		var xScale, yScale, currentData, sensors, altitudes, summaryMonths, minYr, maxYr,minMonth,maxMonth,minDay,maxDay;
 		currentData = allData;
 		
 		var CurrSensor = 'Blewett Pass'
 		minYr = 1990
 		maxYr = 2006
-		minMonth = 3
-		maxMonth = 7
-		minDay = 1
-		maxDay = 20
+		minMonth = 1
+		maxMonth = 12
+		// minDay = 1
+		// maxDay = 20
 
 		var margin = {
 			left:80,
@@ -43,10 +43,10 @@ $(document).ready(function() {
 
 		// Place axis text - to fill in depending on filtered data
 		var xAxisText = svg.append('text')
-										.attr('transform', 'translate(' + (margin.left + width/2) + ',' + (height + margin.top + 80) + ')')
+										.attr('transform', 'translate(' + (margin.left + width/2 - 100) + ',' + (height + margin.top + 80) + ')')
 										.attr('class', 'title');
 		var yAxisText = svg.append('text')
-										.attr('transform', 'translate(' + (margin.left - 40) + ',' + (margin.top + height/2) + ') rotate(-90)')
+										.attr('transform', 'translate(' + (margin.left - 55) + ',' + (margin.top + height - 100) + ') rotate(-90)')
 										.attr('class', 'title');
 
 		var setScales = function(data, type, value, log) {
@@ -74,7 +74,7 @@ $(document).ready(function() {
 			xAxisLabel.transition().duration(1500).call(xAxis)
 											.selectAll("text")
 												.attr("transform", function(d) {
-							               			return "translate(-18,30) rotate(-65)" 
+							               			return "" 
 							               		});
 			yAxisLabel.transition().duration(1500).call(yAxis)
 			xAxisText.text('Month of Year')
@@ -120,19 +120,19 @@ $(document).ready(function() {
 
 		var filterData = function() {
 			currentData = allData.filter(function(d){
-			return (d['Month'] >= minMonth & d['Month'] <= maxMonth & d['Day'] >= minDay & d['Day'] <=maxDay & d['Year'] >= minYr & d['Year'] <= maxYr)
+			   return (d['Month'] >= minMonth && d['Month'] <= maxMonth && d['Year'] >= minYr && d['Year'] <= maxYr)
 			})
 		}
 
-	d3.csv('data/AbbrevAndAltitude.csv', function(data){
-			data.forEach(function(d) {
-				d.Altitude = +d.Altitude
-				d.FName = d.FullName
-				d.SnowWaterEquiv = +d.SnowWaterEquiv
-				d.PrecipitationAccum = +d.PrecipitationAcum
-			});
-			return data
-	});
+	// d3.csv('data/latlng.csv', function(data){
+	// 		data.forEach(function(d) {
+	// 			d.Altitude = +d.Altitude
+	// 			d.FName = d.FullName
+	// 			d.SnowWaterEquiv = +d.SnowWaterEquiv
+	// 			d.PrecipitationAccum = +d.PrecipitationAcum
+	// 		});
+	// 		return data
+	// });
 
 	d3.csv('data/MonthlyAverages.csv', function(data){
 			data.forEach(function(d) {
@@ -155,4 +155,3 @@ $(document).ready(function() {
 
 
 });
-*/

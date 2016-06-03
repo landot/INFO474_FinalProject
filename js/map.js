@@ -129,23 +129,17 @@ $(function() {
     
     //current clicked station variable
     var station;
-
-    d3.csv("data/MonthlyAverages.csv", function(error, avgData) {
-        //console.log(avgData);
-        
-        // console.log(avgData.filter(function(d){
-		// 	return (d['SensorName'] == 'Elbow Lake');
-		// 	}))
-        
-        
+    var clicked = false;
+    //
+    d3.csv("data/WeeklyAveragesBySensor.csv", function(error, avgData) {                
+        //plots coordinates
         latlng.map(function(d) {
-          
           if(coefs[0][d.name] != null) {
-            console.log(d.name)
-            console.log(coefs[0][d.name])
+            //console.log(d.name)
+            //console.log(coefs[0][d.name])
             var coef = coefs[0][d.name]
             
-            
+            //circles and their attributes
             var circle = new L.CircleMarker([d.Latitude, d.Longitude], 10000).addTo(map)
                 .setStyle({fillColor: getColor(coef)})
                 .setStyle({opacity: .5})
@@ -153,44 +147,63 @@ $(function() {
                 .setStyle({color: 'white'})
                 .setStyle({popupAnchor : [25,25]});
                 
-            circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>' + coef)
-          circle.on('mouseover', function () {
-            station = d.name;
-            var snow = avgData.filter(function(e){
-                return (e['SensorName'] == d.name);
-		    })
-            console.log(d.name)
-            console.log(snow)
-            console.log(coefs[0][d.name])
-            document.getElementById("sensor").innerHTML = station;
-            document.getElementById("precip").innerHTML = JSON.stringify(snow);
-            this.openPopup();
-          });
-              
+            circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>' + '&Delta; Snowfall/Year: ' + Math.round(coef*100)/100);
+            //hover over function that saves all data regarding the sensor as var snow
+            var snow;
+            
+            //changes station when clicked
+            circle.on('click', function() {
+                console.log('clicking...')
+                clicked = true;
+                station = d.name;
+                snow = avgData.filter(function(e){
+                    return (e['SensorName'] == d.name);
+                });
+                console.log(snow)
+                console.log('pretending to draw graph...')
+                //drawGraph(snow);
+            });
+            
+            // circle.on('mouseover', function () {
+            //     if(clicked) {
+            //         this.openPopup();
+            //     }
+                // station = d.name;
+                // snow = avgData.filter(function(e){
+                //     return (e['SensorName'] == d.name);
+		        // })
+                // console.log(d.name)
+                // console.log(snow)
+                //console.log(coefs[0][d.name])
+                //changes sensor name
+                //document.getElementById("sensor").innerHTML = station;
+                //adds data to a random p tag
+                //document.getElementById("precip").innerHTML = JSON.stringify(snow);
+                //this.openPopup();
+            //});
           }else {
-              console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
+              //console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
           }
-          
-          
-          
-        
         });
     });
     
     //creates legend in bottom right corner
     var legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [-1.0,-0.5,-0.3, -0.1, 0.1, 0.3, 0.5, 1.0],
-            labels = [];
+        var div = L.DomUtil.create('div', 'info legend');
+            // grades = [-1.0,-0.5,-0.3, -0.1, 0.1, 0.3, 0.5, 1.0],
+            // labels = [];
+            
+            
         // loop through our density intervals and generate a label with a colored square for each interval
-
         // for (var i = 0; i < grades.length; i++) {
         //     div.innerHTML +=
         //         '<i style="background:' + getColor(grades[i]) + '"></i> ' +
         //         grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
         // }
         
+        
+        //legend code
         div.innerHTML +=
                 '<i style="background:' + getColor(-1.0) + '"></i> ' +
                 'less than -.5'+ '<br>';
@@ -215,11 +228,6 @@ $(function() {
         div.innerHTML +=
                 '<i style="background:' + getColor(1.0) + '"></i> ' +
                 'greater than .5'+ '<br>';
-        
-        
-        
-        
-        
         return div;
     };
     legend.addTo(map);
@@ -228,11 +236,12 @@ $(function() {
     function getColor(d) {
         if(d == null){return 'brown'}
         
+                //blues colors
         return  d > 0.5  ? '#000066' :
                 d >= 0.3  ? '#0000ff' :
                 d >= 0.1  ? '#0066ff' :                
                 d >= 0.0 ? '#99ccff' :
-                
+                //red colors
                 d >= -0.1  ? '#ff6666' :
                 d >= -0.3 ? '#cc0000' :
                 d >= -0.5 ? '#800000' :
