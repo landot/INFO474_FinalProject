@@ -10,42 +10,28 @@ $(function() {
         .setView([47.27, -121.34], 7)  
     
     var year = 2000;
-    
+    var created = false;
     //console.log(statesData);
     
-    // function onEachFeature(feature, layer) {
-    //     layer.on({
-    //         mouseover: highlightFeature,
-    //         mouseout: resetHighlight,
-    //         click: zoomToFeature
-    //     });
-    // }
-
-    // geojson = L.geoJson(latlng, {
-    //     style: getColor,
-    //     onEachFeature: onEachFeature
-    // }).addTo(map);
-    
-    
     //hover over
-    function highlightFeature(e) {
-        var layer = e.target;
+    // function highlightFeature(e) {
+    //     var layer = e.target;
 
-        layer.setStyle({
-            weight: 5,
-            color: '#666',
-            dashArray: '',
-            fillOpacity: 0.7
-        });
+    //     layer.setStyle({
+    //         weight: 5,
+    //         color: '#666',
+    //         dashArray: '',
+    //         fillOpacity: 0.7
+    //     });
 
-        if (!L.Browser.ie && !L.Browser.opera) {
-            layer.bringToFront();
-        }
-    }
+    //     if (!L.Browser.ie && !L.Browser.opera) {
+    //         layer.bringToFront();
+    //     }
+    // }
     
-    function resetHighlight(e) {
-        geojson.resetStyle(e.target);
-    }
+    // function resetHighlight(e) {
+    //     geojson.resetStyle(e.target);
+    // }
     
     
     // //zoom to click
@@ -129,9 +115,7 @@ $(function() {
     
     //current clicked station variable
     var station;
-    var clicked = false;
-    //
-    d3.csv("data/WeeklyAveragesBySensor.csv", function(error, avgData) {                
+    d3.csv("data/MonthlyAverages.csv", function(error, avgData) {                
         //plots coordinates
         latlng.map(function(d) {
           if(coefs[0][d.name] != null) {
@@ -149,40 +133,63 @@ $(function() {
                 
             circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>' + '&Delta; Snowfall/Year: ' + Math.round(coef*100)/100);
             //hover over function that saves all data regarding the sensor as var snow
-            var snow;
+            var snow = [];
             
             //changes station when clicked
             circle.on('click', function() {
-                console.log('clicking...')
-                clicked = true;
                 station = d.name;
                 snow = avgData.filter(function(e){
                     return (e['SensorName'] == d.name);
-                });
-                console.log(snow)
-                console.log('pretending to draw graph...')
-                //drawGraph(snow);
+		        })
+                
+                var orgSnow = []; 
+                for(var i = 1; i < 13; i++) {
+                    var obj = snow.filter(function (obj) {
+                        return obj['Month'] === i + '';
+                    })[0];
+                    orgSnow.push(obj);
+                }
+                
+                //changes sensor name
+                document.getElementById("sensor").innerHTML = d.name;
+                //adds data to a random p tag
+                document.getElementById("precip").innerHTML = JSON.stringify(orgSnow);
+                
+                
+                barColor = getColor(coefs[0][station]); //changes color of bars
+                
+                
+                //creates first chart
+                if(created == false) {
+                    created = true;
+                //creates subsequent charts
+                }else {
+                    //removes previous graph elements
+                    $("#vis").html("");
+                }
+                bar(orgSnow);
+                document.getElementById("barTitle").innerHTML = station; //changes title
             });
             
             // circle.on('mouseover', function () {
-            //     if(clicked) {
+            //     //if(clicked) {
             //         this.openPopup();
-            //     }
-                // station = d.name;
-                // snow = avgData.filter(function(e){
-                //     return (e['SensorName'] == d.name);
-		        // })
-                // console.log(d.name)
-                // console.log(snow)
-                //console.log(coefs[0][d.name])
-                //changes sensor name
-                //document.getElementById("sensor").innerHTML = station;
-                //adds data to a random p tag
-                //document.getElementById("precip").innerHTML = JSON.stringify(snow);
-                //this.openPopup();
-            //});
+            //     //}
+            //     station = d.name;
+            //     snow = avgData.filter(function(e){
+            //         return (e['SensorName'] == d.name);
+		    //     })
+            //     console.log(d.name)
+            //     console.log(snow)
+            //     console.log(coefs[0][d.name])
+            //     //changes sensor name
+            //     document.getElementById("sensor").innerHTML = station;
+            //     //adds data to a random p tag
+            //     document.getElementById("precip").innerHTML = JSON.stringify(snow);
+            //     this.openPopup();
+            // });
           }else {
-              //console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
+              console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
           }
         });
     });
@@ -191,16 +198,7 @@ $(function() {
     var legend = L.control({position: 'bottomright'});
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
-            // grades = [-1.0,-0.5,-0.3, -0.1, 0.1, 0.3, 0.5, 1.0],
-            // labels = [];
             
-            
-        // loop through our density intervals and generate a label with a colored square for each interval
-        // for (var i = 0; i < grades.length; i++) {
-        //     div.innerHTML +=
-        //         '<i style="background:' + getColor(grades[i]) + '"></i> ' +
-        //         grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
-        // }
         
         
         //legend code
@@ -251,7 +249,28 @@ $(function() {
 });
 
 
+// function onEachFeature(feature, layer) {
+    //     layer.on({
+    //         mouseover: highlightFeature,
+    //         mouseout: resetHighlight,
+    //         click: zoomToFeature
+    //     });
+    // }
 
+    // geojson = L.geoJson(latlng, {
+    //     style: getColor,
+    //     onEachFeature: onEachFeature
+    // }).addTo(map);
+
+
+
+
+// loop through our density intervals and generate a label with a colored square for each interval
+        // for (var i = 0; i < grades.length; i++) {
+        //     div.innerHTML +=
+        //         '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+        //         grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
+        // }
 
 //   function changeColors() {
         //       circle.setStyle({fillColor: getColor(Math.random())});
