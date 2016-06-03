@@ -64,7 +64,59 @@ $(function() {
     }
     
    
-    
+    var coefs = [
+  {
+    "Alpine Meadows": 0.0679820367591,
+    "Blewett Pass": -0.0314336002476,
+    "Bumping Ridge": 0.807246604096,
+    "Bunchgrass Meadow": 1.17349534961,
+    "Burnt Mountain": 0.103925553852,
+    "Corral Pass": 0.00272825414429,
+    "Cougar Mountain": 0.0498430202561,
+    "Dungeness": -0.071799518424,
+    "Elbow Lake": -0.0654249316049,
+    "Fish Lake": -0.0159348577276,
+    "Green Lake": 0.396216120418,
+    "Grouse Camp": 0.0644034608643,
+    "Hart's Pass": -0.037341688748,
+    "Huckleberry": 0.0501175558505,
+    "June Lake": 0.221363808488,
+    "Lone Pine": 0.16342287825,
+    "Lost Horse": 0.0312107709239,
+    "Lyman Lake": -0.218048383003,
+    "Meadows Pass": 0.176018617186,
+    "Morse Lake": 0.264646334172,
+    "Moses Mountain": -0.0298119155019,
+    "Mount Crag": 0.161019298463,
+    "Mount Gardner": 0.0000452592366492,
+    "Mowich": 0.00284297522954,
+    "Olallie Meadows": 0.136874637983,
+    "Paradise": 0.118255061738,
+    "Park Creek Ridge": -0.0616629893438,
+    "Pigtail Peak": 0.0942398468177,
+    "Pope Ridge": -0.0197238836706,
+    "Potato Hill": -0.109491108967,
+    "Quartz Peak": -0.109491108967,
+    "Rex River": 0.17677536898,
+    "Salmon Meadows": 0.0100080913726,
+    "Sasse Ridge": 0.0152690645356,
+    "Sheep Canyon": -0.524630352584,
+    "Skookum Creek": 0.236174280479,
+    "Spencer Meadow": -0.137753391997,
+    "Spirit Lake": 0.0479380183668,
+    "Stampede Pass": -0.194031924728,
+    "Surprise Lakes": 0.0692148241447,
+    "Swamp Creek": 0.197656853442,
+    "Thunder Basin": -0.0478076711617,
+    "Tinkham Creek": 0.0285006700444,
+    "Touchet": -0.0391618034355,
+    "Trough": 0.0531769290953,
+    "Upper Wheeler": 0.0119709221454,
+    "Waterhole": 0.421157732012,
+    "Wells Creek": 0.117237788951,
+    "White Pass ES": 0.044909180386
+  }
+]
     
     // Create layers for plotting points and adding state lines
     var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',{ minZoom: 7, maxZoom: 13}).addTo(map);
@@ -87,36 +139,122 @@ $(function() {
         
         
         latlng.map(function(d) {
-          //var marker = new L.marker([d.Latitude, d.Longitude], 1, {color:'blue', opacity:.5});
-          //marker.addTo(map);
           
-        //   var icon1 = L.icon({ 
-        //     iconSize:     [38, 95], // size of the icon
-        //     shadowSize:   [50, 64], // size of the shadow
-        //     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
-        //     shadowAnchor: [4, 62],  // the same for the shadow
-        //     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-        //    });
-          
-          var circle = new L.CircleMarker([d.Latitude, d.Longitude], 10000).addTo(map)
-              .setStyle({fillColor: getColor(Math.random())})
-              .setStyle({opacity: .5})
-              .setStyle({fillOpacity: .8})
-              .setStyle({color: 'white'})
-              .setStyle({popupAnchor : [25,25]});
-          
-          
-          function changeColors() {
-              circle.setStyle({fillColor: getColor(Math.random())});
+          if(coefs[0][d.name] != null) {
+            console.log(d.name)
+            console.log(coefs[0][d.name])
+            var coef = coefs[0][d.name]
+            
+            
+            var circle = new L.CircleMarker([d.Latitude, d.Longitude], 10000).addTo(map)
+                .setStyle({fillColor: getColor(coef)})
+                .setStyle({opacity: .5})
+                .setStyle({fillOpacity: .8})
+                .setStyle({color: 'white'})
+                .setStyle({popupAnchor : [25,25]});
+                
+            circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>' + coef)
+          circle.on('mouseover', function () {
+            station = d.name;
+            var snow = avgData.filter(function(e){
+                return (e['SensorName'] == d.name);
+		    })
+            console.log(d.name)
+            console.log(snow)
+            console.log(coefs[0][d.name])
+            document.getElementById("sensor").innerHTML = station;
+            document.getElementById("precip").innerHTML = JSON.stringify(snow);
+            this.openPopup();
+          });
+              
+          }else {
+              console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
           }
+          
+          
+          
+        
+        });
+    });
+    
+    //creates legend in bottom right corner
+    var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend'),
+            grades = [-1.0,-0.5,-0.3, -0.1, 0.1, 0.3, 0.5, 1.0],
+            labels = [];
+        // loop through our density intervals and generate a label with a colored square for each interval
+
+        // for (var i = 0; i < grades.length; i++) {
+        //     div.innerHTML +=
+        //         '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+        //         grades[i] + (grades[i + 1] ? ' &ndash; ' + grades[i + 1] + '<br>' : '+');
+        // }
+        
+        div.innerHTML +=
+                '<i style="background:' + getColor(-1.0) + '"></i> ' +
+                'less than -.5'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(-0.5) + '"></i> ' +
+                'between -.5 and -.3'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(-0.3) + '"></i> ' +
+                'between -.3 and -.1'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(-0.1) + '"></i> ' +
+                'between -.1 and 0'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(0.09) + '"></i> ' +
+                'between 0 and .1'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(0.29) + '"></i> ' +
+                'between .1 and .3'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(0.5) + '"></i> ' +
+                'between .3 and .5'+ '<br>';
+        div.innerHTML +=
+                '<i style="background:' + getColor(1.0) + '"></i> ' +
+                'greater than .5'+ '<br>';
+        
+        
+        
+        
+        
+        return div;
+    };
+    legend.addTo(map);
+    
+    //number distribution for heatmap
+    function getColor(d) {
+        if(d == null){return 'brown'}
+        
+        return  d > 0.5  ? '#000066' :
+                d >= 0.3  ? '#0000ff' :
+                d >= 0.1  ? '#0066ff' :                
+                d >= 0.0 ? '#99ccff' :
+                
+                d >= -0.1  ? '#ff6666' :
+                d >= -0.3 ? '#cc0000' :
+                d >= -0.5 ? '#800000' :
+                d < -0.5 ? '#4d0000':
+                            '';
+    }
+});
+
+
+
+
+//   function changeColors() {
+        //       circle.setStyle({fillColor: getColor(Math.random())});
+        //   }
          
-         function test() {
-           setTimeout(function(){
-             changeColors();
-           }, 3000);   
-         } 
+        //  function test() {
+        //    setTimeout(function(){
+        //      changeColors();
+        //    }, 3000);   
+        //  } 
          
-         test()
+        //  test()
 
        
           
@@ -146,47 +284,19 @@ $(function() {
           });*/
           
           
-          circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>')
-          circle.on('mouseover', function () {
-            station = d.name;
-            var snow = avgData.filter(function(e){
-                return (e['SensorName'] == d.name);
-		    })
-            console.log(d.name)
-            console.log(snow)
-            document.getElementById("sensor").innerHTML = station;
-            document.getElementById("precip").innerHTML = JSON.stringify(snow);
-            this.openPopup();
-          });
+          
         //   circle.on('mouseout', function (e) {
         //     this.closePopup();
         //   });
-        });
-    });
-    
-    //creates legend in bottom right corner
-    var legend = L.control({position: 'bottomright'});
-    legend.onAdd = function (map) {
-        var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0.2, 0.4, 0.6, 0.8, 1.0],
-            labels = [];
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-            div.innerHTML +=
-                '<i style="background:' + getColor(grades[i]) + '"></i> ' +
-                grades[i] + (grades[i] ? '&ndash;' + grades[i] + '<br>' : '+');
-        }
-        return div;
-    };
-    legend.addTo(map);
-    
-    //number distribution for heatmap
-    function getColor(d) {
-        return  d > .800  ? 'blue' :
-                d > .600  ? 'lightblue' :
-                d > .400  ? 'yellow' :
-                d > .20   ? 'orange' :
-                d > .10   ? 'red' :
-                            'red';
-    }
-});
+        
+        
+        //var marker = new L.marker([d.Latitude, d.Longitude], 1, {color:'blue', opacity:.5});
+          //marker.addTo(map);
+          
+        //   var icon1 = L.icon({ 
+        //     iconSize:     [38, 95], // size of the icon
+        //     shadowSize:   [50, 64], // size of the shadow
+        //     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        //     shadowAnchor: [4, 62],  // the same for the shadow
+        //     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        //    });

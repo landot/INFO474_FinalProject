@@ -41,7 +41,7 @@ var latlng = [{
         },
 
         {
-            'name': 'Bunchgrass Mdw',
+            'name': 'Bunchgrass Meadow',
             'Elevation': 5000,
             'Latitude': 48.69,
             'Longitude': -117.18
