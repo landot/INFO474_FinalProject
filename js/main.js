@@ -1,5 +1,5 @@
 
-
+/*
 $(document).ready(function() {
 	
 	d3.csv('data/CleanedSensorData.csv',function(error, allData){
@@ -155,3 +155,4 @@ $(document).ready(function() {
 
 
 });
+*/

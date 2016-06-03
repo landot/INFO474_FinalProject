@@ -1,4 +1,3 @@
-//reference for scaling circles https://www.mapbox.com/mapbox.js/example/v1.0.0/scaled-markers/
 //references for info box http://leafletjs.com/examples/choropleth.html
 
 
@@ -7,8 +6,10 @@
 $(function() {
     // Create a new leaflet map in the "container2" div
     //console.log('test')
-    var map = L.map('container2')
+    var map = L.map('container2', {scrollWheelZoom: false})
         .setView([47.27, -121.34], 7)  
+    
+    var year = 2000;
     
     //console.log(statesData);
     
@@ -26,21 +27,26 @@ $(function() {
     // }).addTo(map);
     
     
-    // //hover over
-    // function highlightFeature(e) {
-    //     var layer = e.name;
+    //hover over
+    function highlightFeature(e) {
+        var layer = e.target;
 
-    //     layer.setStyle({
-    //         weight: 5,
-    //         color: '#666',
-    //         dashArray: '',
-    //         fillOpacity: 0.7
-    //     });
+        layer.setStyle({
+            weight: 5,
+            color: '#666',
+            dashArray: '',
+            fillOpacity: 0.7
+        });
 
-    //     if (!L.Browser.ie && !L.Browser.opera) {
-    //         layer.bringToFront();
-    //     }
-    // }
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+    }
+    
+    function resetHighlight(e) {
+        geojson.resetStyle(e.target);
+    }
+    
     
     // //zoom to click
     // function zoomToFeature(e) {
@@ -73,21 +79,58 @@ $(function() {
     var station;
 
     d3.csv("data/MonthlyAverages.csv", function(error, avgData) {
+        //console.log(avgData);
+        
+        // console.log(avgData.filter(function(d){
+		// 	return (d['SensorName'] == 'Elbow Lake');
+		// 	}))
+        
+        
         latlng.map(function(d) {
           //var marker = new L.marker([d.Latitude, d.Longitude], 1, {color:'blue', opacity:.5});
           //marker.addTo(map);
+          
+        //   var icon1 = L.icon({ 
+        //     iconSize:     [38, 95], // size of the icon
+        //     shadowSize:   [50, 64], // size of the shadow
+        //     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+        //     shadowAnchor: [4, 62],  // the same for the shadow
+        //     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+        //    });
           
           var circle = new L.CircleMarker([d.Latitude, d.Longitude], 10000).addTo(map)
               .setStyle({fillColor: getColor(Math.random())})
               .setStyle({opacity: .5})
               .setStyle({fillOpacity: .8})
-              .setStyle({color: 'white'});
+              .setStyle({color: 'white'})
+              .setStyle({popupAnchor : [25,25]});
+          
+          
+          function changeColors() {
+              circle.setStyle({fillColor: getColor(Math.random())});
+          }
+         
+         function test() {
+           setTimeout(function(){
+             changeColors();
+           }, 3000);   
+         } 
+         
+         test()
+
+       
           
           //changes station when clicked
-          circle.on('click', function() {
-             station = d.name
-             console.log(station); 
-          })
+        //   circle.on('click', function() {
+        //      clicked = !clicked;
+            //  station = d.name;
+            //  console.log(station); 
+            //  if(clicked) {
+            //     this.openPopup();
+            //  }else {
+            //     this.closePopup();
+            //  }
+          //})
 
           /*
           var snow = avgData.filter(function(dd) {
@@ -102,7 +145,22 @@ $(function() {
               return months
           });*/
           
+          
           circle.bindPopup('<strong>' + d.name + '</strong>' + '<br>' + 'Elevation: ' + d.Elevation + '<br>'+ 'Latitude: ' + d.Latitude + '<br>' + 'Longitude: ' + d.Longitude + '<br>')
+          circle.on('mouseover', function () {
+            station = d.name;
+            var snow = avgData.filter(function(e){
+                return (e['SensorName'] == d.name);
+		    })
+            console.log(d.name)
+            console.log(snow)
+            document.getElementById("sensor").innerHTML = station;
+            document.getElementById("precip").innerHTML = JSON.stringify(snow);
+            this.openPopup();
+          });
+        //   circle.on('mouseout', function (e) {
+        //     this.closePopup();
+        //   });
         });
     });
     

@@ -52,7 +52,7 @@
     <!--<div class="container">-->
     <div id="intro" class="container" ng-controller="introController">
 
-        <div class="container centerElement animated fadeIn" ng-show="firstBlock">
+        <div class="container centerElement animated fadeIn" ng-show="firstBlock = true">
             In Washington State, we have a special dependence on our mountains. More specifically, we depend on glaciers in the mountains. Glaciers are large masses of ice that were formed long ago through a buildup of snow and ultimately ice. Despite their large size, <b>glaciers are actually capable of slowly moving!</b><br><br>
             <header class="siteHeader">
                 <h2><span ng-click="showBlock2()">Continue ></h2>
@@ -83,13 +83,13 @@
                 <h6>October</h6>
                 <img src="./img/splash_data/OctoberAvgSnowfall.png">
                 <h6>November</h6>
-                <img src="./img/splash_data/NovemberAvgSnowfall.png">
+                <img src="./img/splash_data/NovemberAvgSnowFall.png">
                 <h6>December</h6>
-                <img src="./img/splash_data/DecemberAvgSnowfall.png">
+                <img src="./img/splash_data/DecemberAvgSnowFall.png">
                 <h6>January</h6>
-                <img src="./img/splash_data/JanuaryAvgSnowfall.png">
+                <img src="./img/splash_data/JanuaryAvgSnowFall.png">
                 <h6>February</h6>
-                <img src="./img/splash_data/FebruaryAvgSnowfall.png">
+                <img src="./img/splash_data/FebruaryAvgSnowFall.png">
             
             </div>
             <header class="siteHeader">
@@ -107,7 +107,7 @@
         </div>
 
     
-        <div ng-show="visualization">
+        <div ng-show="visualization = true">
             <p>
                 <label for="amount1">Year:</label>
                 <input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
@@ -191,6 +191,7 @@
             <div class="display col-md-3 col-md-offset-1">
                 <h4>Specific Sensor Data for <br><span id="sensor">North Cascades Sensor #3410</span> </h4>
                 <p>Precipitation (Year):</p> <br>
+                <p id='precip'></p> <br>
                 <p>Temperature (Year):</p> <br>
                 <p>Yearly Average:</p> <br>
                 <p>Yearly Average 2015: </p><br>
