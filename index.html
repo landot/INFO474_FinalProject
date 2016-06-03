@@ -211,9 +211,10 @@
                     range: false,
                     min: 2000,
                     max: 2015,
-                    value:  2010,
+                    value:  2015,
                     slide: function( event, ui ) {
                         $( ".amount1" ).val(ui.value);
+                        console.log((ui.value));
                     },
                     change: function(event, ui) {
                         redraw($("#year").slider("value"), $("#year").slider("values", 1));
@@ -241,10 +242,11 @@
                     range: false,
                     min: 1,
                     max: 12,
-                    value: 1,
+                    value: 12,
                     slide: function( event, ui ) {
                         
                         $( ".amount2" ).val(  getMonthName(ui.value - 1));
+                        console.log(getMonthName(ui.value - 1));
         
                     },
                     change: function(event, ui) {
@@ -252,10 +254,9 @@
                     }
                     });
                     
-                    var monthVal = $( "#month" ).slider( "values");
+                    var monthVal = $( "#month" ).slider( "value");
                     var monthDisplay = getMonthName(monthVal - 1);
-                    
-                    
+  
                     $( ".amount2" ).val(
                         monthDisplay 
                     );
