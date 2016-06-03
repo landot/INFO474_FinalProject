@@ -1,10 +1,16 @@
 var barData;
 var barColor = 'black';
 
-function bar(data) {
-    var xScale, yScale, currentData, sensors, altitudes, summaryMonths, minYr, maxYr,minMonth,maxMonth,minDay,maxDay;
+function bar(data, xScale, yScale, xval, yval) {
+    var currentData, sensors, altitudes, summaryMonths, minYr, maxYr,minMonth,maxMonth,minDay,maxDay;
     currentData = data;
     
+    
+    var curYear = $( "#year" ).slider( "value")
+    var curMonth = $( "#month" ).slider( "value");
+    
+    console.log(curMonth);
+    console.log(curYear);
     
     minYr = 1990
     maxYr = 2006
@@ -46,22 +52,7 @@ function bar(data) {
                                     .attr('transform', 'translate(' + (margin.left - 55) + ',' + (margin.top + height - 100) + ') rotate(-90)')
                                     .attr('class', 'title');
 
-    var setScales = function(data, type, value, log) {
-        if(type == 'cat'){
-            var domain = data.map(function(d) {return d[value]});
-            return d3.scale.ordinal().rangeBands([0,width],.2).domain(domain)
-        }
-        else
-        {
-            var min = d3.min(data, function(d){return +d[value]})
-            var max = d3.max(data, function(d){return +d[value]})
-            if(log == 1){
-                return d3.scale.log().range([height,0]).domain([min, max])
-            } else {
-                return d3.scale.linear().range([height,0]).domain([min, max])
-            }
-        }
-    }
+
     
     var setAxes = function(xScale, yScale){
         var xAxis = d3.svg.axis().scale(xScale).orient('bottom');
@@ -79,15 +70,16 @@ function bar(data) {
     }
     
     var draw = function(data, xval, yval){
-        xScale = setScales(data, 'cat', xval, 0)
-        yScale = setScales(data, 'reg', yval, 0)
+        /*xScale = setScales(data, 'cat', xval, 0)
+        yScale = setScales(data, 'reg', yval, 0)*/
                                 
     // Set axes
     setAxes(xScale,yScale)
 
     //binding
     var bars = Rects.selectAll('rect').data(data);
-
+    console.log(xScale);
+    console.log(yScale);
     //visualization
     bars.enter().append('rect')
         .attr('x', function(d) {return xScale(d[xval])})
@@ -107,5 +99,8 @@ function bar(data) {
         .attr('width', xScale.rangeBand());
     }
     
+    //set scales
+    
+
     draw(currentData, 'Month', 'Snow Water Equivalent (in)')
 }

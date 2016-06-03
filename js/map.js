@@ -115,7 +115,7 @@ $(function() {
     
     //current clicked station variable
     var station;
-    d3.csv("data/MonthlyAverages.csv", function(error, avgData) {                
+    d3.csv("data/MonthlySensorAverages.csv", function(error, avgData) {                
         //plots coordinates
         latlng.map(function(d) {
           if(coefs[0][d.name] != null) {
@@ -167,7 +167,9 @@ $(function() {
                     //removes previous graph elements
                     $("#vis").html("");
                 }
-                bar(orgSnow);
+                data = orgSnow;
+                
+                //bar(orgSnow);
                 document.getElementById("barTitle").innerHTML = station; //changes title
             });
             

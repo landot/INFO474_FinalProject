@@ -202,29 +202,61 @@
                 <p>Yearly Average:</p> <br>
                 <p>Yearly Average 2015: </p><br>
             </div>
-            
-        
-            
-                <script>
+    
+            <script>
+                var margin = {
+                    left:80,
+                    bottom:80,
+                    top:50,
+                    right:50
+                }
+                    
+
                 $(function() {
                     $( "#year" ).slider({
-                    range: false,
-                    min: 2000,
-                    max: 2015,
-                    value:  2015,
-                    slide: function( event, ui ) {
-                        $( ".amount1" ).val(ui.value);
-                        console.log((ui.value));
-                    },
-                    change: function(event, ui) {
-                        redraw($("#year").slider("value"), $("#year").slider("values", 1));
-                    }
+                        range: false,
+                        min: 2000,
+                        max: 2015,
+                        value:  2015,
+                        slide: function( event, ui ) {
+                            
+                            var setScales = function(data, type, value, log) {
+                                if(type == 'cat'){
+                                    var domain = data.map(function(d) {return d[value]});
+                                    return d3.scale.ordinal().rangeBands([0,width],.2).domain(domain)
+                                }
+                                else
+                                {
+                                    var min = d3.min(data, function(d){return +d[value]})
+                                    var max = d3.max(data, function(d){return +d[value]})
+                                    if(log == 1){
+                                        return d3.scale.log().range([height,0]).domain([min, max])
+                                    } else {
+                                        return d3.scale.linear().range([height,0]).domain([min, max])
+                                    }
+                                }
+                            }
+                            
+                            
+                            
+                            $( ".amount1" ).val(ui.value);
+                            //console.log((ui.value));
+                            xval = 'Month';
+                            yval =  'Snow Water Equivalent (in)';
+                            xScale = setScales(data, 'cat', xval, 0)
+                            yScale = setScales(data, 'reg', yval, 0)
+                            bar(data, xScale, yScale, xval, yval);
+                        },
+                        change: function(event, ui) {
+                            redraw($("#year").slider("value"), $("#year").slider("values", 1));
+                        }
                     });
                     $( ".amount1" ).val($( "#year" ).slider("value"));
                 });
-                
+            
+            
                 $(function() {                
-                    
+                                
                     /*********SLIDER Convert Integers to Month names */
                     getMonthName = function (v) {
                         var n = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -239,30 +271,50 @@
                     /***********************************/
                     
                     $( "#month" ).slider({
-                    range: false,
-                    min: 1,
-                    max: 12,
-                    value: 12,
-                    slide: function( event, ui ) {
+                        range: false,
+                        min: 1,
+                        max: 12,
+                        value: 12,
+                        slide: function( event, ui ) {
+            
+                            var setScales = function(data, type, value, log) {
+                                if(type == 'cat'){
+                                    var domain = data.map(function(d) {return d[value]});
+                                    return d3.scale.ordinal().rangeBands([0,width],.2).domain(domain)
+                                }
+                                else
+                                {
+                                    var min = d3.min(data, function(d){return +d[value]})
+                                    var max = d3.max(data, function(d){return +d[value]})
+                                    if(log == 1){
+                                        return d3.scale.log().range([height,0]).domain([min, max])
+                                    } else {
+                                        return d3.scale.linear().range([height,0]).domain([min, max])
+                                    }
+                                }
+                            }
+            
+                            
+                            $( ".amount2" ).val(  getMonthName(ui.value - 1));
+                            //console.log(getMonthName(ui.value - 1));
+                            xScale = setScales(data, 'cat', xval, 0)
+                            yScale = setScales(data, 'reg', yval, 0)
+                            bar(data, xScale, yScale, xval, yval);
+                            //set scales 
+                            
+                
+                        },
+                        change: function(event, ui) {
+                            redraw($("#month").slider("value"));
+                        }
+                        });
                         
-                        $( ".amount2" ).val(  getMonthName(ui.value - 1));
-                        console.log(getMonthName(ui.value - 1));
-        
-                    },
-                    change: function(event, ui) {
-                        redraw($("#month").slider("value"));
-                    }
-                    });
-                    
-                    var monthVal = $( "#month" ).slider( "value");
-                    var monthDisplay = getMonthName(monthVal - 1);
-  
-                    $( ".amount2" ).val(
-                        monthDisplay 
-                    );
-        
-        
-        
+                        var monthVal = $( "#month" ).slider( "value");
+                        var monthDisplay = getMonthName(monthVal - 1);
+                
+                        $( ".amount2" ).val(
+                            monthDisplay 
+                        );
                     });
         
                     /*
@@ -313,6 +365,17 @@
                     console.log("pressing pause");
                 }
                 
+                
+                var data = [];
+                var xScale;
+                var yScale;
+                
+                var height = 600 - margin.bottom - margin.top;
+                var width = 800 - margin.left - margin.right;
+    
+
+                
+            
         </script>
     </div>
     </div>

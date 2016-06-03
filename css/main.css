@@ -4,6 +4,10 @@
     margin-bottom: 20px;
 }
 
+.ui-slider {
+    color: red; 
+}
+
 #day {
     margin-bottom: 10px;
 }
