@@ -132,6 +132,8 @@ $(function() {
             
             //changes station when clicked
             circle.on('click', function() {
+                $('html,body').animate({
+                    scrollTop: $("#pageTitle").offset().top},'slow');
                 station = d.name;
                 stations.push(station)
                 console.log(stations)
@@ -171,7 +173,6 @@ $(function() {
                         //removes previous graph elements
                         $("#vis").html("");
                     }
-                    //bar(orgSnow);
                     bar(orgSnow);
                     document.getElementById("barTitle").innerHTML = station; //changes title    
                 }else {
@@ -192,7 +193,7 @@ $(function() {
     legend.onAdd = function (map) {
         var div = L.DomUtil.create('div', 'info legend');
             
-        
+        div.innerHTML += '&Delta; Snowfall/Year (inch): <br>'
         
         //legend code
         div.innerHTML +=
