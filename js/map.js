@@ -133,7 +133,7 @@ $(function() {
             //changes station when clicked
             circle.on('click', function() {
                 $('html,body').animate({
-                    scrollTop: $("#pageTitle").offset().top},'slow');
+                    scrollTop: $("#yearText").offset().top},'slow');
                 station = d.name;
                 stations.push(station)
                 console.log(stations)
