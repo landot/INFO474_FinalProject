@@ -24,6 +24,12 @@ function bar(data) {
                 .attr('height',600)
                 .attr('width',800)
     
+    // var button = document.createElement('p');
+    
+    // //button.className += "glyphicon glyphicon-plus"
+    // button.innerHTML = 'asdfasdfasdfasdfaafd'
+    // //button.innerHTML = 'id=\'plus\' class="glyphicon glyphicon-plus"></span>'
+    
     var height = 600 - margin.bottom - margin.top;
     var width = 800 - margin.left - margin.right;
     
@@ -74,7 +80,14 @@ function bar(data) {
                                             });
         yAxisLabel.transition().duration(1500).call(yAxis)
         xAxisText.text('Month of Year')
-        yAxisText.text('Cumulative Snowfall')
+        yAxisText.text(function(){
+            var feat = getDataType();
+            if(feat == 'Air Temperature Average (degF)') {
+                return 'Average Temperature'
+            }else {
+                return 'Average Snowfall (in)'
+            }
+        })
 
     }
     
@@ -107,5 +120,5 @@ function bar(data) {
         .attr('width', xScale.rangeBand());
     }
     
-    draw(currentData, 'Month', 'Snow Water Equivalent (in)')
+    draw(currentData, 'Month', getDataType())
 }
