@@ -11,11 +11,11 @@
     <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
     
     <!--js libraries-->
-    <script src="./js/jquery-1.12.4.js"></script>
+    <!--<script src="./js/jquery-1.12.4.js"></script>-->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="./js/jquery-ui.js"></script>
     <script src="./js/angular.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.js" type="text/javascript" ></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
     <script src="http://d3js.org/d3.v3.min.js"></script>
     <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
     <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
@@ -53,7 +53,7 @@
     <!--<div class="container">-->
     <div id="intro" class="container" ng-controller="introController">
 
-        <div class="container centerElement animated fadeIn" ng-show="firstBlock = true">
+        <div class="container centerElement animated fadeIn" ng-show="firstBlock = false">
             In Washington State, we have a special dependence on our mountains. More specifically, we depend on glaciers in the mountains. Glaciers are large masses of ice that were formed long ago through a buildup of snow and ultimately ice. Despite their large size, <b>glaciers are actually capable of slowly moving!</b><br><br>
             <header class="siteHeader">
                 <h2><span ng-click="showBlock2()">Continue ></h2>
@@ -124,13 +124,14 @@
                 
             <div id="month"></div> 
             
+            <!--
             <p>
                 <label for="amount3">Day:</label>
                 <input type="text" class="amount3" readonly style="border:0; color:#f6931f; font-weight:bold;">
             </p>
             
             <div id="day"></div>    
-        
+            -->
         
             <br>
             <div id='button'>
@@ -160,20 +161,23 @@
             <br>
             <h1 id='barTitle'></h1>
             <section id="sandbox">
+            
             <div class="container" id="vis">
             </div>
+            
+            <div id='playpause'>
+                <button id="playButton" type="button" class="btn btn-default btn-xs" onclick="pressPlay()">
+                <span class="glyphicon glyphicon-play"></span>
+                </button>
+                <button id="pauseButton" type="button" class="btn btn-default btn-xs" onclick="pressPause()">
+                <span class="glyphicon glyphicon-pause"></span>
+                </button>    
+            </div>
+            
             <div class="container2" id="container2" style="width:1200px; height:600px;">
         
             </section>
             
-            <div id='playpause'>
-                <button id="playButton" type="button" class="btn btn-default btn-xs">
-                <span class="glyphicon glyphicon-play"></span>
-                </button>
-                <button id="pauseButton" type="button" class="btn btn-default btn-xs">
-                <span class="glyphicon glyphicon-pause"></span>
-                </button>    
-            </div>
         
             <div class="display col-md-3">
                         <h4>Overall Data for Range</h4>
@@ -204,19 +208,19 @@
                 <script>
                 $(function() {
                     $( "#year" ).slider({
-                    range: true,
+                    range: false,
                     min: 2000,
                     max: 2015,
-                    values: [ 2002, 2010 ],
+                    value:  2015,
                     slide: function( event, ui ) {
-                        $( ".amount1" ).val(ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+                        $( ".amount1" ).val(ui.value);
+                        console.log((ui.value));
                     },
                     change: function(event, ui) {
-                        redraw($("#year").slider("values", 0), $("#year").slider("values", 1));
+                        redraw($("#year").slider("value"), $("#year").slider("values", 1));
                     }
                     });
-                    $( ".amount1" ).val($( "#year" ).slider( "values", 0 ) +
-                    " - " + $( "#year" ).slider( "values", 1 ) );
+                    $( ".amount1" ).val($( "#year" ).slider("value"));
                 });
                 
                 $(function() {                
@@ -235,35 +239,33 @@
                     /***********************************/
                     
                     $( "#month" ).slider({
-                    range: true,
+                    range: false,
                     min: 1,
                     max: 12,
-                    values: [ 3, 6 ],
+                    value: 12,
                     slide: function( event, ui ) {
                         
-                        $( ".amount2" ).val(  getMonthName(ui.values[ 0 ] - 1) + " - " + getMonthName(ui.values[ 1 ] - 1) );
+                        $( ".amount2" ).val(  getMonthName(ui.value - 1));
+                        console.log(getMonthName(ui.value - 1));
         
                     },
                     change: function(event, ui) {
-                        redraw($("#month").slider("values", 0), $("#month").slider("values", 1));
+                        redraw($("#month").slider("value"));
                     }
                     });
                     
-                    var month1Val = $( "#month" ).slider( "values", 0 );
-                    var month1Display = getMonthName(month1Val - 1);
-                    var month2Val = $( "#month" ).slider( "values", 1 );
-                    var month2Display = getMonthName(month2Val - 1);
-                    
-                    
+                    var monthVal = $( "#month" ).slider( "value");
+                    var monthDisplay = getMonthName(monthVal - 1);
+  
                     $( ".amount2" ).val(
-                        month1Display + " - " + month2Display 
+                        monthDisplay 
                     );
         
         
         
                     });
         
-                    
+                    /*
                 $(function() {
                     $( "#day" ).slider({
                     range: true,
@@ -279,7 +281,7 @@
                     });
                     $( ".amount3" ).val($( "#day" ).slider( "values", 0 ) +
                     " - " + $( "#day" ).slider( "values", 1 ) );
-                });
+                });*/
                 
                 var redraw = function(value1, value2) {
                     //
@@ -287,6 +289,28 @@
                     console.log($('input[name=year]:checked').val());
                     console.log(value1);
                     console.log(value2);
+                }
+                
+                var pressPlay = function() {
+                    for (var i = 0; i < 100; i++) {
+                        window.setTimeout(function() {
+                            console.log("function " + i);
+                        }, 1000);
+                    }
+                    console.log($('input[name=school]:checked').val());
+                    console.log($('input[name=year]:checked').val());
+                    console.log($( "#day" ).slider( "values", 0 ));
+                    console.log($( "#day" ).slider( "values", 0 ));
+                    console.log($( "#month" ).slider( "values", 0 ));
+                    console.log($( "#month" ).slider( "values", 0 ));
+                    console.log($( "#year" ).slider( "values", 0 ));
+                    console.log($( "#year" ).slider( "values", 0 ));
+                    
+                    console.log("pressing play");
+                }
+                
+                var pressPause = function() {
+                    console.log("pressing pause");
                 }
                 
         </script>
