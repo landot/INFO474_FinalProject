@@ -27,7 +27,6 @@
     <link rel="stylesheet" href="./css/animate.css">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
     <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
-
     
      <!-- our JS -->
     <script type="text/javascript" src="./js/latlng.js"></script>        
@@ -117,12 +116,12 @@
             
             <div id="year"></div>
             
-            <p>
+            <!--<p>
                 <label for="amount2">Month:</label>
                 <input type="text" class="amount2" readonly style="border:0; color:#f6931f; font-weight:bold;">
             </p>
                 
-            <div id="month"></div> 
+            <div id="month"></div> -->
             
             <!--
             <p>
@@ -134,7 +133,7 @@
             -->
         
             <br>
-            <div id='button'>
+            <!--<div id='button'>
             <div class="btn-group" id="list1">
                 <label class="btn btn-primary active">
                 <input value="Year" class="school" name="school" type="radio" ng-model="year" autocomplete="off" checked>Year
@@ -145,16 +144,16 @@
                 <label class="btn btn-primary">
                 <input value="Day" class="school" name="school" type="radio" autocomplete="off">Day
                 </label>
-            </div>
+            </div>-->
             <div class="btn-group" id="list2">
-                <label class="btn btn-primary active">
+                <!--<label class="btn btn-primary active">
                 <input class='year' value="Both" name="year" type="radio" autocomplete="off" checked>Both
+                </label>-->
+                <label class="btn btn-primary  text-center">
+                <input id='temp1' class='temp1' value="Temperature" name="year" type="radio" autocomplete="off">Temperature
                 </label>
-                <label class="btn btn-primary">
-                <input class='year' value="Temperature" name="year" type="radio" autocomplete="off">Temperature
-                </label>
-                <label class="btn btn-primary">
-                <input class='year' value="Precipitation" name="year" type="radio" autocomplete="off">Precipitation
+                <label class="btn btn-primary  text-center">
+                <input id='precip1' class='precip1' value="Precipitation" name="year" type="radio" autocomplete="off" checked>Precipitation
                 </label>
             </div>
             </div>
@@ -163,7 +162,9 @@
             <section id="sandbox">
             
             <div class="container" id="vis">
+                <!--<span id='plus' class="glyphicon glyphicon-plus"></span>-->
             </div>
+            
             
             <div id='playpause'>
                 <button id="playButton" type="button" class="btn btn-default btn-xs" onclick="pressPlay()">
@@ -174,8 +175,8 @@
                 </button>    
             </div>
             
-            <div class="container2" id="container2" style="width:1200px; height:600px;">
-        
+            <div class="container2" id="container2" style="width:1200px; height:600px;"></div>
+            <div class="container3" id="container3">asdf</div>
             </section>
             
         
@@ -211,7 +212,7 @@
                     range: false,
                     min: 2000,
                     max: 2015,
-                    value:  2015,
+                    value:  2012,
                     slide: function( event, ui ) {
                         $( ".amount1" ).val(ui.value);
                         console.log((ui.value));
