@@ -162,6 +162,7 @@ $(function() {
                 barColor = getColor(coefs[0][station]); //changes color of bars
                 
                 if(orgSnow[0] != undefined) {
+                    $("#error").html(""); //deletes any error message
                     //creates first chart
                     if(created == false) {
                         created = true;
@@ -175,6 +176,9 @@ $(function() {
                     document.getElementById("barTitle").innerHTML = station; //changes title    
                 }else {
                     console.log('station does not have data for this date')
+                    document.getElementById("error").innerHTML = 'Error: There is no data for this year';
+                    $("#vis").html(""); //deletes graph
+                    $("#barTitle").html(""); //deletes title
                 }
             });
           }else {
