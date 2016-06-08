@@ -35,6 +35,18 @@ p {
     color: navy;
 }
 
+.amount1 {
+    font-size: 50px;
+}
+
+.btn {
+    font-size: 32px;
+}
+
+
+label {
+    font-size: 50px;
+}
 
 .leaflet-popup-content {
     font-size:16px;
@@ -44,6 +56,12 @@ p {
     margin: 0 0 5px;
     color: #777;
 }
+
+.temp1, .precip1 {
+    width: .6em; 
+    height: .6em;
+}
+
 
 .siteHeader{
     width: 100%;
