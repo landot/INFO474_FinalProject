@@ -1,43 +1,38 @@
 //references for info box http://leafletjs.com/examples/choropleth.html
 
 
+var stations = [];
+var stationsData = [];
+
+//returns the year value on the slider
+function getYear() {
+    //console.log($("#year").slider("value"));
+    return $("#year").slider("value");
+}
+
+//returns the box that is clicked (either temperature or precipitation)
+function getDataType() {
+    // console.log($("#temp1").is(':checked'));
+    // console.log($("#precip1").is(':checked'));
+    if($("#temp1").is(':checked')) {
+        console.log('temperature')
+        return 'Air Temperature Average (degF)'  
+    } else {
+        console.log('precipitation')        
+        return 'Snow Water Equivalent (in)'  
+    }
+}
 
 
 $(function() {
+    //getYear()
+    
     // Create a new leaflet map in the "container2" div
     //console.log('test')
     var map = L.map('container2', {scrollWheelZoom: false})
         .setView([47.27, -121.34], 7)  
     
-    var year = 2000;
     var created = false;
-    //console.log(statesData);
-    
-    //hover over
-    // function highlightFeature(e) {
-    //     var layer = e.target;
-
-    //     layer.setStyle({
-    //         weight: 5,
-    //         color: '#666',
-    //         dashArray: '',
-    //         fillOpacity: 0.7
-    //     });
-
-    //     if (!L.Browser.ie && !L.Browser.opera) {
-    //         layer.bringToFront();
-    //     }
-    // }
-    
-    // function resetHighlight(e) {
-    //     geojson.resetStyle(e.target);
-    // }
-    
-    
-    // //zoom to click
-    // function zoomToFeature(e) {
-    //     map.fitBounds(e.name.getBounds());
-    // }
     
     function stateStyle(feature) {
         return {
@@ -115,7 +110,7 @@ $(function() {
     
     //current clicked station variable
     var station;
-    d3.csv("data/MonthlyAverages.csv", function(error, avgData) {                
+    d3.csv("data/MonthlySensorAverages.csv", function(error, avgData) {                
         //plots coordinates
         latlng.map(function(d) {
           if(coefs[0][d.name] != null) {
@@ -138,10 +133,12 @@ $(function() {
             //changes station when clicked
             circle.on('click', function() {
                 station = d.name;
+                stations.push(station)
+                console.log(stations)
                 snow = avgData.filter(function(e){
-                    return (e['SensorName'] == d.name);
+                    return (e['SensorName'] == d.name && e['Year'] == getYear());
 		        })
-                
+                console.log(getYear())
                 var orgSnow = []; 
                 for(var i = 1; i < 13; i++) {
                     var obj = snow.filter(function (obj) {
@@ -149,6 +146,12 @@ $(function() {
                     })[0];
                     orgSnow.push(obj);
                 }
+                
+                stationsData.push(orgSnow);
+                console.log(stationsData);
+                var currYear = getYear();
+                console.log(currYear)
+                getDataType();
                 
                 //changes sensor name
                 document.getElementById("sensor").innerHTML = d.name;
@@ -158,36 +161,22 @@ $(function() {
                 
                 barColor = getColor(coefs[0][station]); //changes color of bars
                 
-                
-                //creates first chart
-                if(created == false) {
-                    created = true;
-                //creates subsequent charts
+                if(orgSnow[0] != undefined) {
+                    //creates first chart
+                    if(created == false) {
+                        created = true;
+                    //creates subsequent charts
+                    }else {
+                        //removes previous graph elements
+                        $("#vis").html("");
+                    }
+                    //bar(orgSnow);
+                    bar(orgSnow);
+                    document.getElementById("barTitle").innerHTML = station; //changes title    
                 }else {
-                    //removes previous graph elements
-                    $("#vis").html("");
+                    console.log('station does not have data for this date')
                 }
-                bar(orgSnow);
-                document.getElementById("barTitle").innerHTML = station; //changes title
             });
-            
-            // circle.on('mouseover', function () {
-            //     //if(clicked) {
-            //         this.openPopup();
-            //     //}
-            //     station = d.name;
-            //     snow = avgData.filter(function(e){
-            //         return (e['SensorName'] == d.name);
-		    //     })
-            //     console.log(d.name)
-            //     console.log(snow)
-            //     console.log(coefs[0][d.name])
-            //     //changes sensor name
-            //     document.getElementById("sensor").innerHTML = station;
-            //     //adds data to a random p tag
-            //     document.getElementById("precip").innerHTML = JSON.stringify(snow);
-            //     this.openPopup();
-            // });
           }else {
               console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
           }
@@ -328,3 +317,22 @@ $(function() {
         //     shadowAnchor: [4, 62],  // the same for the shadow
         //     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
         //    });
+        
+        
+                    // circle.on('mouseover', function () {
+            //     //if(clicked) {
+            //         this.openPopup();
+            //     //}
+            //     station = d.name;
+            //     snow = avgData.filter(function(e){
+            //         return (e['SensorName'] == d.name);
+		    //     })
+            //     console.log(d.name)
+            //     console.log(snow)
+            //     console.log(coefs[0][d.name])
+            //     //changes sensor name
+            //     document.getElementById("sensor").innerHTML = station;
+            //     //adds data to a random p tag
+            //     document.getElementById("precip").innerHTML = JSON.stringify(snow);
+            //     this.openPopup();
+            // });
