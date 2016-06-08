@@ -28,6 +28,9 @@ p {
     text-align: left;
 }
 
+
+
+
 #plus {
     top: -80px;
     left: 20px;
@@ -36,16 +39,17 @@ p {
 }
 
 .amount1 {
-    font-size: 50px;
+    font-size: 35px;
 }
 
 .btn {
-    font-size: 32px;
+    font-size: 22px;
+    margin-top: -30px;
 }
 
 
 label {
-    font-size: 50px;
+    font-size: 35px;
 }
 
 .leaflet-popup-content {
@@ -174,6 +178,12 @@ body {
   margin-top: 20%;
 }
 
+#yearText {
+    margin-top: -40px;
+    margin-bottom: -25px;
+    margin-left: -70px;
+}
+
 
 /*.info {
     background: lightgray;
@@ -195,6 +205,11 @@ body {
 
 h1, h6 {
     text-align: center;
+}
+
+#barTitle {
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 
