@@ -47,7 +47,7 @@
   <body ng-app="introApp">
     <!--<div class="container text-center">-->
       
-    <h1 class="animated fadeIn"><b>INFO 474 Final Project</b></h1>
+    <h1 id='pageTitle' class="animated fadeIn"><b>INFO 474 Final Project</b></h1>
     <h6 class="animated fadeIn"><b>Timothy Landowski, Daniel Sebring, Nishant Velagapudi</b></h6><br>
     <!--<div class="container">-->
     <div id="intro" class="container" ng-controller="introController">
@@ -108,7 +108,7 @@
 
     
         <div ng-show="visualization = true">
-            <p>
+            <p id='yearText'>
                 <label for="amount1">Year:</label>
                 <input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
                 <div id="slider"></div>
@@ -176,7 +176,7 @@
                 </button>    
             </div>
             
-            <div class="container2" id="container2" style="width:1200px; height:600px;"></div>
+            <div class="container2" id="container2" style="width:1000px; height:600px;"></div>
             <div class="container3" id="container3">asdf</div>
             </section>
             
