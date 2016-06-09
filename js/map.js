@@ -1,9 +1,10 @@
 //references for info box http://leafletjs.com/examples/choropleth.html
-
+console.log('this is danieldev')
 
 var stations = [];
 var stationsData = [];
 var allData = [];
+var currentStation;
 var coefs = [
   {
     "Alpine Meadows": 0.0679820367591,
@@ -85,7 +86,7 @@ $(function() {
     var map = L.map('container2', {scrollWheelZoom: false})
         .setView([47.27, -121.34], 7)  
     
-    var created = false;
+    // var created = false;
     
     function stateStyle(feature) {
         return {
@@ -137,52 +138,13 @@ $(function() {
                 $('html,body').animate({
                     scrollTop: $("#yearText").offset().top},'slow');
                 station = d.name;
+                currentStation = station;
                 stations.push(station)
-                console.log(stations)
-                snow = avgData.filter(function(e){
-                    return (e['SensorName'] == d.name && e['Year'] == getYear());
-		        })
-                console.log(getYear())
-                var orgSnow = []; 
-                for(var i = 1; i < 13; i++) {
-                    var obj = snow.filter(function (obj) {
-                        return obj['Month'] === i + '';
-                    })[0];
-                    orgSnow.push(obj);
-                }
-                
-                stationsData.push(orgSnow);
-                console.log(stationsData);
-                var currYear = getYear();
-                console.log(currYear)
-                getDataType();
-                
-                //changes sensor name
-                document.getElementById("sensor").innerHTML = d.name;
-                //adds data to a random p tag
-                document.getElementById("precip").innerHTML = JSON.stringify(orgSnow);
-                
                 
                 barColor = getColor(coefs[0][station]); //changes color of bars
                 
-                if(orgSnow[0] != undefined) {
-                    $("#error").html(""); //deletes any error message
-                    //creates first chart
-                    if(created == false) {
-                        created = true;
-                    //creates subsequent charts
-                    }else {
-                        //removes previous graph elements
-                        $("#vis").html("");
-                    }
-                    bar(orgSnow);
-                    document.getElementById("barTitle").innerHTML = station; //changes title    
-                }else {
-                    console.log('station does not have data for this date')
-                    document.getElementById("error").innerHTML = 'Error: There is no data for this year';
-                    $("#vis").html(""); //deletes graph
-                    $("#barTitle").html(""); //deletes title
-                }
+                bar(avgData, station);
+                document.getElementById("barTitle").innerHTML = station; //changes title    
             });
           }else {
               console.log(d.name + 'DID NOT HAVE A CORRESPONDING VALUE')
@@ -257,7 +219,9 @@ $(function() {
         console.log((ui.value));
     },
     change: function(event, ui) {
-        redrawGraph();
+        if(created) {
+            redrawGraph();
+        }
     }
     });
     $( ".amount1" ).val($( "#year" ).slider("value"));
@@ -266,59 +230,61 @@ $(function() {
 });
 
 function redrawGraph() {
-    latlng.map(function(d) {
+    bar(allData, currentStation);
+}
+    // latlng.map(function(d) {
             
-    {
-        $('html,body').animate({
-            scrollTop: $("#yearText").offset().top},'slow');
-        station = d.name;
-        stations.push(station)
-        console.log(stations)
-        snow = allData.filter(function(e){
-            return (e['SensorName'] == d.name && e['Year'] == getYear());
-        })
-        console.log("result of getYear");
-        console.log(getYear())
-        var orgSnow = []; 
-        for(var i = 1; i < 13; i++) {
-            var obj = snow.filter(function (obj) {
-                return obj['Month'] === i + '';
-            })[0];
-            orgSnow.push(obj);
-        }
+    // {
+    //     $('html,body').animate({
+    //         scrollTop: $("#yearText").offset().top},'slow');
+    //     station = d.name;
+    //     stations.push(station)
+    //     console.log(stations)
+    //     snow = allData.filter(function(e){
+    //         return (e['SensorName'] == d.name && e['Year'] == getYear());
+    //     })
+    //     console.log("result of getYear");
+    //     console.log(getYear())
+    //     var orgSnow = []; 
+    //     for(var i = 1; i < 13; i++) {
+    //         var obj = snow.filter(function (obj) {
+    //             return obj['Month'] === i + '';
+    //         })[0];
+    //         orgSnow.push(obj);
+    //     }
         
-        stationsData.push(orgSnow);
-        console.log(stationsData);
-        console.log(orgSnow);
-        var currYear = getYear();
-        console.log(currYear)
-        getDataType();
+    //     stationsData.push(orgSnow);
+    //     console.log(stationsData);
+    //     console.log(orgSnow);
+    //     var currYear = getYear();
+    //     console.log(currYear)
+    //     getDataType();
         
-        //changes sensor name
-        document.getElementById("sensor").innerHTML = d.name;
-        //adds data to a random p tag
-        document.getElementById("precip").innerHTML = JSON.stringify(orgSnow);
+    //     //changes sensor name
+    //     document.getElementById("sensor").innerHTML = d.name;
+    //     //adds data to a random p tag
+    //     document.getElementById("precip").innerHTML = JSON.stringify(orgSnow);
         
         
-        barColor = getColor(coefs[0][station]); //changes color of bars
+    //     barColor = getColor(coefs[0][station]); //changes color of bars
         
-        if(orgSnow[0] != undefined) {
-            $("#error").html(""); //deletes any error message
-            //creates first chart
+    //     if(orgSnow[0] != undefined) {
+    //         $("#error").html(""); //deletes any error message
+    //         //creates first chart
 
-            //removes previous graph elements
-            $("#vis").html("");
-            console.log(orgSnow);
-            console.log(stationsData);
-            bar(orgSnow);
-            document.getElementById("barTitle").innerHTML = station; //changes title    
-        } else {
-            console.log('station does not have data for this date')
-            document.getElementById("error").innerHTML = 'Error: There is no data for this year';
-            $("#vis").html(""); //deletes graph
-            $("#barTitle").html(""); //deletes title
-        }
-}})}
+    //         //removes previous graph elements
+    //         $("#vis").html("");
+    //         console.log(orgSnow);
+    //         console.log(stationsData);
+    //         bar(orgSnow);
+    //         document.getElementById("barTitle").innerHTML = station; //changes title    
+    //     } else {
+    //         console.log('station does not have data for this date')
+    //         document.getElementById("error").innerHTML = 'Error: There is no data for this year';
+    //         $("#vis").html(""); //deletes graph
+    //         $("#barTitle").html(""); //deletes title
+    //     }
+//}})}
 
 
 
