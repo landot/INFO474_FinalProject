@@ -74,10 +74,10 @@ function bar(data1, station) {
         
         var svg = d3.select('#vis')
                     .append('svg')
-                    .attr('height',600)
+                    .attr('height',500)
                     .attr('width',800)   
         
-        var height = 600 - margin.bottom - margin.top;
+        var height = 500 - margin.bottom - margin.top;
         var width = 800 - margin.left - margin.right;
         
         var Rects = svg.append('g')
@@ -207,7 +207,7 @@ function bar(data1, station) {
         draw(currentData, 'Month', getDataType())
     }else {
         console.log('station does not have data for this date')
-        document.getElementById("error").innerHTML = 'Error: There is no data for this year';
+        document.getElementById("error").innerHTML = 'ERROR: There is no data for this year!';
         $("#vis").html(""); //deletes graph
         $("#barTitle").html(""); //deletes title
     }

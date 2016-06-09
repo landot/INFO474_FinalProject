@@ -50,15 +50,14 @@
     <h1 id='pageTitle' class="animated fadeIn"><b>INFO 474 Final Project</b></h1>
     <h6 class="animated fadeIn"><b>Timothy Landowski, Daniel Sebring, Nishant Velagapudi</b></h6><br>
 
-
-
-            <p id='yearText'>
-                <label for="amount1">Year:</label>
-                <input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
-                <div id="slider"></div>
-            </p>
-            
-            <div id="year"></div>
+            <div class = "container">
+                <p id='yearText'>
+                    <div class="text-center"><label for="amount1">Year:</label></div>
+                    <div class="text-center"><input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;"></div>
+                    <div id="slider"></div>
+                </p>
+                
+                <div id="year"></div>
             
             <!--<p>
                 <label for="amount2">Month:</label>
@@ -89,6 +88,7 @@
                 <input value="Day" class="school" name="school" type="radio" autocomplete="off">Day
                 </label>
             </div>-->
+        <div class="text-center">
             <div class="btn-group" id="list2">
                 <!--<label class="btn btn-primary active">
                 <input class='year' value="Both" name="year" type="radio" autocomplete="off" checked>Both
@@ -100,6 +100,9 @@
                 <input id='precip1' class='precip1' value="Precipitation" name="year" type="radio" autocomplete="off" checked>Precipitation
                 </label>
             </div>
+        </div>
+        </div>
+
             
             <br>
             <h1 id='barTitle'></h1>
@@ -110,44 +113,21 @@
                 <!--<span id='plus' class="glyphicon glyphicon-plus"></span>-->
             </div>
             
-            
-            <div id='playpause'>
-                <button id="playButton" type="button" class="btn btn-default btn-xs" onclick="pressPlay()">
-                <span class="glyphicon glyphicon-play"></span>
-                </button>
-                <button id="pauseButton" type="button" class="btn btn-default btn-xs" onclick="pressPause()">
-                <span class="glyphicon glyphicon-pause"></span>
-                </button>    
-            </div>
+            <div class="text-center">
+                <div id='playpause'>
+                    <button id="playButton" type="button" class="btn btn-default btn-xs" onclick="pressPlay()">
+                    <span class="glyphicon glyphicon-play"></span>
+                    </button>
+                    <button id="pauseButton" type="button" class="btn btn-default btn-xs" onclick="pressPause()">
+                    <span class="glyphicon glyphicon-pause"></span>
+                    </button>    
+                </div>
+                </div>
             
             <div class="container2" id="container2" style="width:1000px; height:600px;"></div>
-            <div class="container3" id="container3">asdf</div>
             </section>
             
-        
-            <div class="display col-md-3">
-                        <h4>Overall Data for Range</h4>
-                        <p>Precipitation (Year):</p> <br>
-                        <p>Temperature (Year):</p> <br>
-                        <p>Yearly Average: </p><br>
-                        <p>Yearly Average 2015:</p> <br>
-            </div>
-            
-            <div class="col-md-4 col-md-offset-1">
-                <h2>Range</h2>
-                <input type="text" class="amount1 text-center" readonly style="border:0;"><br>
-                <input type="text" class="amount2 text-center" readonly style="border:0;"><br>
-                <input type="text" class="amount3 text-center" readonly style="border:0;"><br>
-            </div>
-            
-            <div class="display col-md-3 col-md-offset-1">
-                <h4>Specific Sensor Data for <br><span id="sensor">North Cascades Sensor #3410</span> </h4>
-                <p>Precipitation (Year):</p> <br>
-                <p id='precip'></p> <br>
-                <p>Temperature (Year):</p> <br>
-                <p>Yearly Average:</p> <br>
-                <p>Yearly Average 2015: </p><br>
-            </div>
+       
            </div> 
         
             

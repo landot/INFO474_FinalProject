@@ -142,7 +142,7 @@ $(function() {
                 stations.push(station)
                 
                 barColor = getColor(coefs[0][station]); //changes color of bars
-                
+                console.log(avgData);
                 bar(avgData, station);
                 document.getElementById("barTitle").innerHTML = station; //changes title    
             });
@@ -230,6 +230,7 @@ $(function() {
 });
 
 function redrawGraph() {
+    console.log(allData);
     bar(allData, currentStation);
 }
     // latlng.map(function(d) {

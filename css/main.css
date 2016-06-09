@@ -9,7 +9,7 @@
 }
 
 #playpause {
-    margin-top: 10px;
+    margin-top: 15px;
 }
 
 p {
@@ -28,9 +28,6 @@ p {
     text-align: left;
 }
 
-
-
-
 #plus {
     top: -80px;
     left: 20px;
@@ -40,13 +37,13 @@ p {
 
 .amount1 {
     font-size: 35px;
+    text-align: center;
 }
 
 .btn {
     font-size: 22px;
     margin-top: -30px;
 }
-
 
 label {
     font-size: 35px;
@@ -65,7 +62,6 @@ label {
     width: .6em; 
     height: .6em;
 }
-
 
 .siteHeader{
     width: 100%;
@@ -105,10 +101,6 @@ label {
     width: 100%;
     /*margin: -500px;*/
 }
-
-
-
-
 
 #vis {
     text-align: center;
@@ -175,7 +167,12 @@ body {
 
 .centerElement {
   position: relative;
-  margin-top: 20%;
+  margin-top: 17%;
+}
+
+.centerSmall {
+    position:relative;
+    margin-top:8%;
 }
 
 #yearText {
@@ -190,6 +187,13 @@ body {
     padding: 10px;
     opacity: .80;
 }*/
+
+#error {
+    text-align: center;
+    color: red;
+    font-weight: 700;
+    
+}
 
 .legend {
     line-height: 28px;
