@@ -1,5 +1,32 @@
 
+function changeYear(year) {
+    $("#year").slider('value',year);
+    $( ".amount1" ).val($( "#year" ).slider("value"));
+    
+}
 
+var tempYear;
+var pressPlay = function() {
+    tempYear = $("#year").slider('value');
+    console.log("pressing play");
+    myTimer = setInterval(function() {
+        console.log('waiting 5..')
+        tempYear = tempYear + 1
+        changeYear(tempYear);
+        if(tempYear > 2014) {
+            pressPause()
+        }
+    }, 3000);
+    console.log('done')
+    console.log(tempYear)
+    
+    };
+$( ".amount1" ).val($( "#year" ).slider("value"));
+
+var pressPause = function() {
+    console.log("pressing pause");
+    clearInterval (myTimer);
+}
 /*
 $(document).ready(function() {
 	//d3.csv('data/WeeklyAveragesBySensor.csv',function(error, allData){

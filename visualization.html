@@ -128,10 +128,38 @@
             </section>
             
        
+            <!--<div class="container3" id="container3">asdf</div>-->
+            </section>
+            
+<!--        
+            <div class="display col-md-3">
+                        <h4>Overall Data for Range</h4>
+                        <p>Precipitation (Year):</p> <br>
+                        <p>Temperature (Year):</p> <br>
+                        <p>Yearly Average: </p><br>
+                        <p>Yearly Average 2015:</p> <br>
+            </div>
+            
+            <div class="col-md-4 col-md-offset-1">
+                <h2>Range</h2>
+                <input type="text" class="amount1 text-center" readonly style="border:0;"><br>
+                <input type="text" class="amount2 text-center" readonly style="border:0;"><br>
+                <input type="text" class="amount3 text-center" readonly style="border:0;"><br>
+            </div>
+            -->
+            <!--<div class="display col-md-3 col-md-offset-1">
+                <h4>Specific Sensor Data for <br><span id="sensor">North Cascades Sensor #3410</span> </h4>
+                <p>Precipitation (Year):</p> <br>
+                <p id='precip'></p> <br>
+                <p>Temperature (Year):</p> <br>
+                <p>Yearly Average:</p> <br>
+                <p>Yearly Average 2015: </p><br>
+            </div>-->
            </div> 
         
             
                 <script>
+                    
                 /*$(function() {
                     $( "#year" ).slider({
                     range: false,
@@ -209,27 +237,26 @@
                     " - " + $( "#day" ).slider( "values", 1 ) );
                 });*/
                       
-                var pressPlay = function() {
-                    for (var i = 0; i < 100; i++) {
-                        window.setTimeout(function() {
-                            console.log("function " + i);
-                        }, 1000);
-                    }
-                    console.log($('input[name=school]:checked').val());
-                    console.log($('input[name=year]:checked').val());
-                    console.log($( "#day" ).slider( "values", 0 ));
-                    console.log($( "#day" ).slider( "values", 0 ));
-                    console.log($( "#month" ).slider( "values", 0 ));
-                    console.log($( "#month" ).slider( "values", 0 ));
-                    console.log($( "#year" ).slider( "values", 0 ));
-                    console.log($( "#year" ).slider( "values", 0 ));
-                    
-                    console.log("pressing play");
-                }
+                // var pressPlay = function() {
+                //     console.log("pressing play");
+                //     //d3.select("#start").on("click", function() {
+                //         //clearInterval (myTimer);
+                //         //myTimer = 
+                //         setInterval(function() {
+                //             console.log('waiting 5..')
+                //         //var b= d3.select("#rangeSlider");
+                //         //var t = (+b.property("value") + 1) % (+b.property("max") + 1);
+                //         //if (t == 0) { t = +b.property("min"); }
+                //         //b.property("value", t);
+                //         //update (t);
+                //         }, 5000);
+                //         console.log('done')
+                //     });
+                // }
                 
-                var pressPause = function() {
-                    console.log("pressing pause");
-                }
+                // var pressPause = function() {
+                //     console.log("pressing pause");
+                // }
                 
         </script>
     </div>

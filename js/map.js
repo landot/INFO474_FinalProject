@@ -208,10 +208,12 @@ function getColor(d) {
                         '';
 }
 
+
+
 $(function() {
     $( "#year" ).slider({
     range: false,
-    min: 2000,
+    min: 1990,
     max: 2015,
     value:  2012,
     slide: function( event, ui ) {
