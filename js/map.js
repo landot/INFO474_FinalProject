@@ -3,49 +3,8 @@
 
 var stations = [];
 var stationsData = [];
-
-//returns the year value on the slider
-function getYear() {
-    //console.log($("#year").slider("value"));
-    return $("#year").slider("value");
-}
-
-//returns the box that is clicked (either temperature or precipitation)
-function getDataType() {
-    // console.log($("#temp1").is(':checked'));
-    // console.log($("#precip1").is(':checked'));
-    if($("#temp1").is(':checked')) {
-        console.log('temperature')
-        return 'Air Temperature Average (degF)'  
-    } else {
-        console.log('precipitation')        
-        return 'Snow Water Equivalent (in)'  
-    }
-}
-
-
-$(function() {
-    //getYear()
-    
-    // Create a new leaflet map in the "container2" div
-    //console.log('test')
-    var map = L.map('container2', {scrollWheelZoom: false})
-        .setView([47.27, -121.34], 7)  
-    
-    var created = false;
-    
-    function stateStyle(feature) {
-        return {
-            weight: 3,
-            opacity: 1,
-            color:'green',
-            dashArray: '5',
-            fillOpacity: 0.1
-        };
-    }
-    
-   
-    var coefs = [
+var allData = [];
+var coefs = [
   {
     "Alpine Meadows": 0.0679820367591,
     "Blewett Pass": -0.0314336002476,
@@ -98,6 +57,48 @@ $(function() {
     "White Pass ES": 0.044909180386
   }
 ]
+//returns the year value on the slider
+function getYear() {
+    //console.log($("#year").slider("value"));
+    return $("#year").slider("value");
+}
+
+//returns the box that is clicked (either temperature or precipitation)
+function getDataType() {
+    // console.log($("#temp1").is(':checked'));
+    // console.log($("#precip1").is(':checked'));
+    if($("#temp1").is(':checked')) {
+        console.log('temperature')
+        return 'Air Temperature Average (degF)'  
+    } else {
+        console.log('precipitation')        
+        return 'Snow Water Equivalent (in)'  
+    }
+}
+
+
+$(function() {
+    //getYear()
+    
+    // Create a new leaflet map in the "container2" div
+    //console.log('test')
+    var map = L.map('container2', {scrollWheelZoom: false})
+        .setView([47.27, -121.34], 7)  
+    
+    var created = false;
+    
+    function stateStyle(feature) {
+        return {
+            weight: 3,
+            opacity: 1,
+            color:'green',
+            dashArray: '5',
+            fillOpacity: 0.1
+        };
+    }
+    
+   
+    
     
     // Create layers for plotting points and adding state lines
     var layer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png',{ minZoom: 7, maxZoom: 13}).addTo(map);
@@ -110,7 +111,8 @@ $(function() {
     
     //current clicked station variable
     var station;
-    d3.csv("data/MonthlySensorAverages.csv", function(error, avgData) {                
+    d3.csv("data/MonthlySensorAverages.csv", function(error, avgData) {   
+        allData = avgData;             
         //plots coordinates
         latlng.map(function(d) {
           if(coefs[0][d.name] != null) {
@@ -225,22 +227,99 @@ $(function() {
     legend.addTo(map);
     
     //number distribution for heatmap
-    function getColor(d) {
-        if(d == null){return 'brown'}
-        
-                //blues colors
-        return  d > 0.5  ? '#000066' :
-                d >= 0.3  ? '#0000ff' :
-                d >= 0.1  ? '#0066ff' :                
-                d >= 0.0 ? '#99ccff' :
-                //red colors
-                d >= -0.1  ? '#ff6666' :
-                d >= -0.3 ? '#cc0000' :
-                d >= -0.5 ? '#800000' :
-                d < -0.5 ? '#4d0000':
-                            '';
-    }
+
 });
+
+function getColor(d) {
+    if(d == null){return 'brown'}
+    
+            //blues colors
+    return  d > 0.5  ? '#000066' :
+            d >= 0.3  ? '#0000ff' :
+            d >= 0.1  ? '#0066ff' :                
+            d >= 0.0 ? '#99ccff' :
+            //red colors
+            d >= -0.1  ? '#ff6666' :
+            d >= -0.3 ? '#cc0000' :
+            d >= -0.5 ? '#800000' :
+            d < -0.5 ? '#4d0000':
+                        '';
+}
+
+$(function() {
+    $( "#year" ).slider({
+    range: false,
+    min: 2000,
+    max: 2015,
+    value:  2012,
+    slide: function( event, ui ) {
+        $( ".amount1" ).val(ui.value);
+        console.log((ui.value));
+    },
+    change: function(event, ui) {
+        redrawGraph();
+    }
+    });
+    $( ".amount1" ).val($( "#year" ).slider("value"));
+    
+    
+});
+
+function redrawGraph() {
+    latlng.map(function(d) {
+            
+    {
+        $('html,body').animate({
+            scrollTop: $("#yearText").offset().top},'slow');
+        station = d.name;
+        stations.push(station)
+        console.log(stations)
+        snow = allData.filter(function(e){
+            return (e['SensorName'] == d.name && e['Year'] == getYear());
+        })
+        console.log("result of getYear");
+        console.log(getYear())
+        var orgSnow = []; 
+        for(var i = 1; i < 13; i++) {
+            var obj = snow.filter(function (obj) {
+                return obj['Month'] === i + '';
+            })[0];
+            orgSnow.push(obj);
+        }
+        
+        stationsData.push(orgSnow);
+        console.log(stationsData);
+        console.log(orgSnow);
+        var currYear = getYear();
+        console.log(currYear)
+        getDataType();
+        
+        //changes sensor name
+        document.getElementById("sensor").innerHTML = d.name;
+        //adds data to a random p tag
+        document.getElementById("precip").innerHTML = JSON.stringify(orgSnow);
+        
+        
+        barColor = getColor(coefs[0][station]); //changes color of bars
+        
+        if(orgSnow[0] != undefined) {
+            $("#error").html(""); //deletes any error message
+            //creates first chart
+
+            //removes previous graph elements
+            $("#vis").html("");
+            console.log(orgSnow);
+            console.log(stationsData);
+            bar(orgSnow);
+            document.getElementById("barTitle").innerHTML = station; //changes title    
+        } else {
+            console.log('station does not have data for this date')
+            document.getElementById("error").innerHTML = 'Error: There is no data for this year';
+            $("#vis").html(""); //deletes graph
+            $("#barTitle").html(""); //deletes title
+        }
+}})}
+
 
 
 // function onEachFeature(feature, layer) {

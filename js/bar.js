@@ -2,6 +2,8 @@ var barData;
 var barColor = 'black';
 
 function bar(data) {
+   
+    
     var xScale, yScale, currentData, sensors, altitudes, summaryMonths, minYr, maxYr,minMonth,maxMonth,minDay,maxDay;
     currentData = data;
     
@@ -54,6 +56,7 @@ function bar(data) {
 
     var setScales = function(data, type, value, log) {
         if(type == 'cat'){
+            console.log(data);
             var domain = data.map(function(d) {return d[value]});
             return d3.scale.ordinal().rangeBands([0,width],.2).domain(domain)
         }
@@ -90,8 +93,10 @@ function bar(data) {
         })
 
     }
+
     
     var draw = function(data, xval, yval){
+        console.log('drawing now yo');
         xScale = setScales(data, 'cat', xval, 0)
         yScale = setScales(data, 'reg', yval, 0)
                                 

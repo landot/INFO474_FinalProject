@@ -208,7 +208,7 @@
         
             
                 <script>
-                $(function() {
+                /*$(function() {
                     $( "#year" ).slider({
                     range: false,
                     min: 2000,
@@ -223,7 +223,7 @@
                     }
                     });
                     $( ".amount1" ).val($( "#year" ).slider("value"));
-                });
+                });*/
                 
                 $(function() {                
                     
@@ -284,15 +284,7 @@
                     $( ".amount3" ).val($( "#day" ).slider( "values", 0 ) +
                     " - " + $( "#day" ).slider( "values", 1 ) );
                 });*/
-                
-                var redraw = function(value1, value2) {
-                    //
-                    console.log($('input[name=school]:checked').val());
-                    console.log($('input[name=year]:checked').val());
-                    console.log(value1);
-                    console.log(value2);
-                }
-                
+                      
                 var pressPlay = function() {
                     for (var i = 0; i < 100; i++) {
                         window.setTimeout(function() {
