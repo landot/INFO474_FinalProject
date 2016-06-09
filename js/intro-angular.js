@@ -101,6 +101,6 @@ introApp.controller('introController', ['$scope', '$window', function($scope, $w
   }
   
  $scope.showIntro = function() {
-   $window.location.href = '/visualization.html';
+   $window.location.href = './visualization.html';
   }
 }]);
