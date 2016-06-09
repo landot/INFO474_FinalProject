@@ -3,11 +3,35 @@ var barColor;
 var created = false;
 
 function bar(data1, station) {
-   
+   console.log("data1 ", data1);
     
     var xScale, yScale, currentData, sensors, altitudes, summaryMonths, minYr, maxYr,minMonth,maxMonth,minDay,maxDay;
     
     barColor = getColor(coefs[0][station]);
+    
+    var tempMax = 0;
+    var snowYearMax = 0;
+    console.log("station ", station);
+    for (var i = 0; i < data1.length; i++) {
+        if (data1[i]["SensorName"] == station) {
+            console.log(data1[i]["Snow Water Equivalent (in)"] );
+            console.log(snowYearMax);
+            console.log(parseFloat(data1[i]["Snow Water Equivalent (in)"]) > snowYearMax)
+            console.log(data1[i]["Year"]);
+            if (parseFloat(data1[i]["Snow Water Equivalent (in)"]) > snowYearMax) {
+                console.log(data1[i]["Snow Water Equivalent (in)"] );
+                console.log(data1[i]["Year"]);
+                snowYearMax = data1[i]["Snow Water Equivalent (in)"]
+            } 
+            if (data1[i]["Air Temperature Average (degF)"] > tempMax) {
+                tempMax = data1[i]["Air Temperature Average (degF)"]
+            }
+        }
+
+    }    
+    
+    console.log(tempMax);
+    console.log(snowYearMax);
    
     var snow = data1.filter(function(e){
         if(e != undefined) {
@@ -22,6 +46,7 @@ function bar(data1, station) {
         })[0];
         orgSnow.push(obj);
     }
+    console.log("!!!!!!!orgSnow OOOORORORORORORSnowOWOWOWOW" , orgSnow);
     
     if(orgSnow[0] != undefined) {
         $("#error").html(""); //deletes any error message
@@ -102,10 +127,22 @@ function bar(data1, station) {
                     }
                     return +d[value]
                 })
+                console.log("MAX MAX MAX MAX " + max);
+                console.log("snowMax " + snowYearMax)
                 if(log == 1){
-                    return d3.scale.log().range([height,0]).domain([min, max])
+                    if($("input[name='year']:checked").val() == "Temperature") {
+                        return d3.scale.log().range([height,0]).domain([min, tempMax])
+                    } else {
+                        return d3.scale.log().range([height,0]).domain([min, snowYearMax])
+                    }
+                    
                 } else {
-                    return d3.scale.linear().range([height,0]).domain([min, max])
+                    if($("input[name='year']:checked").val() == "Temperature") {
+                        return d3.scale.linear().range([height,0]).domain([min, tempMax])
+                    } else {
+                        return d3.scale.linear().range([height,0]).domain([min, snowYearMax])
+                    }
+                    
                 }
             }
         }

@@ -49,81 +49,9 @@
       
     <h1 id='pageTitle' class="animated fadeIn"><b>INFO 474 Final Project</b></h1>
     <h6 class="animated fadeIn"><b>Timothy Landowski, Daniel Sebring, Nishant Velagapudi</b></h6><br>
-    <!--<div class="container">-->
-    <div id="intro" class="container" ng-controller="introController">
-    
-        <div class="container centerElement animated fadeIn" ng-show="firstBlock">
-            In Washington State, we have a special dependence on our mountains. More specifically, we depend on glaciers in the mountains. Glaciers are large masses of ice that were formed long ago through a buildup of snow and ultimately ice. Despite their large size, <b>glaciers are actually capable of slowly moving!</b><br><br>
-            <header class="siteHeader">
-                <h2><span ng-click="showBlock2()">Continue ></h2>
-                <img src="./img/calving.jpg" class="imagetype1" />
-                
-            </header>
-        </div>
-        
-        <div class="container centerElement animated fadeIn" ng-show="secondBlock">
-            The <b>Natural Resources Conservation Service (NRCS)</b> keeps several <b>SNOTEL (snow telemetry)</b> sensors to track total precipitation accumulation near glaciers and mountains around Washington State. Accumulation is particularly important to Washington State; a major source of our drinking water is snowmelt. This same water is first used in the production of hydroelectricity - <b>Washington state produced 30% of the nations net hydroelectricity in 2014!</b> <br><br>
-            <header class="siteHeader">
-                <h2><span ng-click="showBlock3()">Continue ></h2>
-                <img src="./img/walla_walla_dry.jpg" class="imagetype2" />
-            </header>
-        </div>
-        
-        <div class="container centerElement animated fadeIn" ng-show="thirdBlock">
-            Recent climate changes have greatly affected snowfall and overall snowpack size, which has implications for mountain enthusiasts (skiiers, snowboarders, or snowtrekkers) in addition to all residents of Washington State. Our tool here sources SNOTEL data from the NRCS to allow you to visualize these changes. There are <b>50 sensors available</b> to you and the data can stretch back as far as <b>1976</b>. <br><br>
-            <header class="siteHeader">
-                <h2><span ng-click="showBlock4()">Continue ></h2>
-                <img src="./img/nature_snow.jpg" class="imagetype3" />
-            </header>
-        </div>
-        
-        <div class="container centerElement animated fadeIn" ng-show="fourthBlock">
-            The data is a little alarming.  These are the first order regression lines we calculated for the average snowfall of each month.
-            <form class="text-center">
-                <input type="radio" name="monthShow" value="October" ng-model="October" id="October" ng-change="show(October)" /> October 
-                <input type="radio" name="monthShow" value="November" ng-model="November" id="November" ng-change="show(November)" /> November 
-                <input type="radio" name="monthShow" value="December" ng-model="December" id="December" ng-change="show(December)" /> December 
-                <input type="radio" name="monthShow" value="January" ng-model="January" id="January" ng-change="show(January)" /> January 
-                <input type="radio" name="monthShow" value="February" ng-model="February" id="February" ng-change="show(February)" /> February 
-            </form>
-            
-            <div class="dataDiv">
-                <div id="october" ng-show="october" >
-                    <h6>October</h6>
-                    <img src="./img/splash_data/OctoberAvgSnowfall.png">
-                </div>
-                <div id="november" ng-show="november" >
-                    <h6>November</h6>
-                    <img src="./img/splash_data/NovemberAvgSnowFall.png">
-                </div>
-                <div id="december" ng-show="december">
-                    <h6>December</h6>
-                    <img src="./img/splash_data/DecemberAvgSnowFall.png">
-                </div>
-                <div id="january" ng-show="january">
-                <h6>January</h6>
-                    <img src="./img/splash_data/JanuaryAvgSnowFall.png"> 
-                </div>
-                <div id="february" ng-show="february">
-                    <h6>February</h6>
-                    <img src="./img/splash_data/FebruaryAvgSnowFall.png">
-                </div> 
-            </div>
-            <header class="siteHeader">
-                <h2><span ng-click="showBlock5()">Continue ></h2>
-                <img src="./img/lake_shasta_low.jpg" class="imagetype4" />
-            </header>
-        </div>
-        
-        <div class="container centerElement animated fadeIn" ng-show="fifthBlock">
-            <b>Interested yet?</b> If so, we hope you look at the resources provided by the <a href="http://www.ecy.wa.gov/climatechange/washington.htm">Washington State Department of Ecology</a>. You can support clean care emission standards, or support policies targeted towards enforcing green building standards in Seattle. We hope you take action and help us keep Washington State's iconic mountains white!
-            <header class="siteHeader">
-                <div class="visualizationh2"><h2><span ng-click="showIntro()">Continue to Visualization ></h2></div>
-                <img src="./img/lewis_county_fire.jpg" class="imagetype5" />
-            </header>
-        </div>
 
-        <div ng-show="visualization">
+
+
             <p id='yearText'>
                 <label for="amount1">Year:</label>
                 <input type="text" class="amount1" readonly style="border:0; color:#f6931f; font-weight:bold;">
@@ -324,7 +252,6 @@
                 }
                 
         </script>
-    </div>
     </div>
   
       
